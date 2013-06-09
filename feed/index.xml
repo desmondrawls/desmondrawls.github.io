@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[H.E.L.M.]]></title>
-  <link href="http://desmondrawls.github.io/atom.xml" rel="self"/>
+  <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
   <updated>2013-06-09T14:28:37-04:00</updated>
   <id>http://desmondrawls.github.io/</id>
