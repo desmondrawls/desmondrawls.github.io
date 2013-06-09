@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://desmondrawls.github.io/feed" rel="self"/>
+  <link href="http://desmondrawls.github.io/"/>
+  <updated>2013-06-09T14:49:15-04:00</updated>
+  <id>http://desmondrawls.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[say my name gitgit push origin source]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source/"/>
+    <updated>2013-06-09T14:02:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Why meee??]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/09/why-meee/"/>
+    <updated>2013-06-09T13:54:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/09/why-meee</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>
