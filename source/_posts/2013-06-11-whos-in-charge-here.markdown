@@ -9,7 +9,7 @@ categories:
 **Recording live from the mountain-top, fog-shrouded monastery of the holy order of uninitialized variables aka the chamber of binary incantations aka the cave of forgotten code aka the officer candidate school in the global war on minor inconveniences aka just another secret underground yoleo-enabled satellite surveillance station aka the equal-opportunity drop in a white male pond aka the how-many-computer-nerds-does-it-take-to-make-a-cup-of-coffee research labratory aka The learn-you-some-git-and-join-a-startup School aka The Flatiron School.**
 <br/>
 <br/>
-Here among the 1000 twisted power cords at Flatiron School we are blessed with many fascinating guest speakers. This is our opportunity to break the command line’s spell and focus on the big picture. I love the big picture. And I love new perspectives.  The web developer’s perspective is completely new for me.  The Flatiron School is really my first experience of life on the other side of the retinal display. After only a week of speakers one thing has really struck me:
+Here among the 1000 twisted power cords at Flatiron School we are blessed with many fascinating guest speakers. This is our opportunity to break the command line’s spell and focus on the big picture. I love the big picture. And I love new perspectives.  The web developer’s perspective is completely new for me.  The Flatiron School is really my first experience of life on the other side of the retinal display. That said, after only a week of fascinating guest speakers one thing has really hit me:
 <br/><br/>
 **Code is power. Power to shape the world.**
 
