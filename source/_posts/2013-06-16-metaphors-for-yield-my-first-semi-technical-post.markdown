@@ -19,6 +19,7 @@ Trivial examples look like this:
 <img src="../images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline">
 <br><br><br>
 -OR-
+With a method that takes an argument:
 <br><br><br>
 <img src="../images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline">
 
