@@ -1,0 +1,138 @@
+---
+layout: post
+title: "5 Metaphors for 'yield' (My First-Semi Technical Post)"
+date: 2013-06-15 19:59
+comments: true
+categories: 
+---
+
+Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami forrest aka the blank screen factory aka the wind tunnel between your ears aka the what-are-you-waiting-for school of thought aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School
+
+'yield' is a keyword that appears in a method to pass a value to a yet-to-be-determined block of code. Trivial examples look like this:
+
+def three_peat
+  yield
+  yield
+  yield
+end
+
+three_peat {puts "hello world!"}
+three_peat {puts "goodbye world!"}
+
+
+def do_the_block (string)
+  yield string
+end
+
+do_the_block ("what's going to happen to me?") {|this_string| puts this_string}
+do_the_block ("i'm scared") {|bad_string| puts bad_string.split.insert(1,"not").insert(3, "anymore").join(" ")}
+<br><br><br>
+These are trivial examples because they could be re-written with no loss of key-strokes as:
+<br><br><br>
+3.times {puts "hello world!"}
+
+3.times {puts "goodbye world!"}
+
+puts "what's going to happen to me?"
+
+"I'm scared".split.insert(1, "not").insert(3, "anymore").join(" ")
+
+
+More worthwhile implementions of the yield keyword involve methods with more logic. For example:
+
+class Email
+  attr_accessor :sender, :recipient, :file
+
+  def nsa
+    f = File.open(self.file, "r")
+    guilty = yield f
+    f.close()
+    if guilty
+      puts "send #{self.sender} and #{self.recipient} to federal pound-me-in-the-ass prison"
+    else
+      puts "email is clean, tap the phones"
+    end
+  end
+
+end
+
+year_2013 = Email.new
+year_2013.sender = "me"
+year_2013.recipient = "little old lady"
+year_2013.file = "/Hi_Grandma.pdf"
+
+year_2013.nsa do |file|
+  while line = file.gets
+    if line == "Hi Grandma, I'm going to hijack a plane and fly it into the Pentagon"
+      return true
+    end
+  end
+  return false
+end
+
+year_2023 = Email.new
+year_2023.sender = "me"
+year_2023.recipient = "little old lady"
+year_2023.file = "/Hi_Grandma.pdf"
+
+year_2013.nsa do |file|
+  while line = file.gets
+    if line == "Hi Grandma, I'm sick of Christianity so I'm converting to Islam. I just thought you should know."
+      return true
+    end
+  end
+  return false
+end
+
+year_2033 = Email.new
+year_2033.sender = "me"
+year_2033.recipient = "little old lady"
+year_2033.file = "/Hi_Grandma.pdf"
+
+year_2033.nsa do |file|
+  while line = file.gets
+    if line == "Hi Grandma, this president sucks. ps Happy 106th bday!"
+      return true
+    end
+  end
+  return false
+end
+
+
+That's yield in action. It might feel like a slippery concept because it is. For those that learn from metaphors I came up with 5 that might help: 
+
+Yield is the settings on your microwave. Like on mine i have "time defrost", "auto defrost", "reheat", "cook", "popcorn", "pizza", and "beverage." 
+
+<img src="../images/popcorn.jpg" alt="Smiley face" height="200" width="200" display="inline">
+
+Yield is the attachments on your kitchenaid food processor.
+
+<img src="../images/mixer.jpg" alt="Smiley face" height="200" width="200" display="inline">
+
+Yield is AutoTune.
+
+Yield is tinted sunglasses.
+<p><img src="../images/bono.jpg" alt="Smiley face" height="200" width="200" display="inline"><img src="../images/bonoblue.jpg" alt="Smiley face" height="200" width="200" display="inline"></P>
+
+Yield is that trick play from Little Giants.
+
+
+<!-- <embed src="../images/little_giants.mov" width="200" height="200"> -->
+
+<!-- <article><video id="littleGiants" src="../images/little_giants.mp4" controls></video></article> -->
+
+<!-- <video width="320" height="240" controls autoplay>
+  <source src="../images/little_giants.mp4" type="video/mp4">
+</video> -->
+
+<video width="320" height="240" controls autoplay>
+  <source src="../images/little_giants.mp4" type="video/mp4">
+  <source src="../images/little_giants.ogg" type="video/ogg">
+  <source src="../images/little_giants.webm" type="video/webm">
+  <object data="little_giants.mp4" width="320" height="240">
+    <embed src="../images/little_giants.mp4" width="320" height="240">
+  </object> 
+Your browser does not support video
+</video>
+
+
