@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "5 Metaphors for 'yield' (My First-Semi Technical Post)"
+title: "5 Metaphors for 'yield' (My First Semi-Technical Post)"
 date: 2013-06-15 19:59
 comments: true
 categories: 
