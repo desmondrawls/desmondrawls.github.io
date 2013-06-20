@@ -4,7 +4,7 @@
   <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-06-16T14:32:08-04:00</updated>
+  <updated>2013-06-20T08:42:00-04:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
     <name><![CDATA[Desmond Rawls]]></name>
@@ -14,11 +14,20 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Tester]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/16/tester/"/>
+    <updated>2013-06-16T00:00:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/16/tester</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[5 Metaphors for 'yield' (My First Semi-Technical Post)]]></title>
     <link href="http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/"/>
     <updated>2013-06-15T19:59:00-04:00</updated>
     <id>http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post</id>
-    <content type="html"><![CDATA[<p><strong>Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the wind sock between your ears aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School</strong></p>
+    <content type="html"><![CDATA[<p><strong>Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the dark room with a light in the corner aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School</strong></p>
 
 <h2>&lsquo;yield&rsquo; is a keyword that appears in a method to turn over the reigns to a yet-to-be-determined block of code. You add the block when you call the function. It can be any block you like.</h2>
 
