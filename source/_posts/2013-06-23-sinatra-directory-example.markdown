@@ -17,31 +17,31 @@ Once I was done I understood how all the parts moved. I can conceptualize it and
 
 <img src="../images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline">
 
-RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called "Scanty, a really small blog." I tried drawing a diagram of this one too:
+RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called "([Scanty](https://github.com/adamwiggins/scanty "Scanty")), a really small blog." I tried drawing a diagram of this one too:
 <br><br>
 
-<img src="../images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline">
+<img src="/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline">
 
-Needless to say, this diagram makes no sense... Nothing should be floating.
+This diagram is a mess. And the views shouldn't be floating like that.
 
 It'd kinda like I just built a lawn mower engine:
 
-<img src="../images/mower.jpg" alt="sinatra" height="300" width="1000" display="inline">
+<img src="/images/mower.jpg" alt="sinatra" height="300" width="1000" display="inline">
 
 Then tried to understand a simple volvo engine:
 <br><br>
-<img src="../images/volvo.jpg" alt="sinatra" height="300" width="1000" display="inline">
+<img src="/images/volvo.jpg" alt="sinatra" height="300" width="1000" display="inline">
 
 ...and realized I couldn't even find the starter.
 
-At first I thought config.ru was the application file because it required 'main.' But apparently 'require' went the way of the carburetor. It looks like $LOAD_PATH is the current technology.
+At first I thought config.ru was the application file because it required 'main.'
 
 Not being able to find the starter is understable when the engine is packaged like this:
 <br><br>
-<img src="../images/volvocovered.jpg" alt="sinatra" height="300" width="1000" display="inline">
+<img src="/images/volvocovered.jpg" alt="volvo" height="300" width="1000" display="inline">
 <br><br>
 
 All I know right now is that Sinatra is doing some cloak-and-dagger behind-the-scenes shit. And I find that untrustworthy.
 <br><br>
 
-What happens if I choose not to use Sinatra?? Is there a steampunk movement in the Ruby community? If you're out there call me..
+Is there a steampunk movement in the Ruby community? If you're out there call me..
