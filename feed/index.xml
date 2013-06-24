@@ -4,7 +4,7 @@
   <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-06-24T09:12:37-04:00</updated>
+  <updated>2013-06-24T09:18:05-04:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
     <name><![CDATA[Desmond Rawls]]></name>
@@ -50,7 +50,7 @@
 
 <p><img src="http://desmondrawls.github.io/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
 
-<p>This diagram is a mess. And the views shouldn&rsquo;t be floating like that.</p>
+<p>This diagram is hard to follow. And the views shouldn&rsquo;t be floating like that.</p>
 
 <p>It&rsquo;d kinda like I just built a lawn mower engine:</p>
 
