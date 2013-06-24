@@ -75,7 +75,7 @@ year_2023.sender = "me"
 year_2023.recipient = "little old lady"
 year_2023.file = "/Hi_Grandma.pdf"
 
-year_2013.nsa do |file|
+year_2023.nsa do |file|
   while line = file.gets
     if line == "Hi Grandma, I'm sick of Christianity so I'm converting to Islam. I just thought you should know."
       return true

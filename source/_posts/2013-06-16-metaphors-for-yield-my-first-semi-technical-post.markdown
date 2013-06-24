@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-**Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the wind sock between your ears aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School**
+**Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the dark room with a light in the corner aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School**
 
 ##'yield' is a keyword that appears in a method to turn over the reigns to a yet-to-be-determined block of code. You add the block when you call the function. It can be any block you like. 
 <br><br><br>  
