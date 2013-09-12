@@ -7,7 +7,7 @@ categories:
 ---
 Recording on vhs from your childhood blockbuster video store aka the aliased keystrokes thrift shop aka the Pro-Question Action League "a question's a question, no matter how small" aka the Land Before Rails aka the RegEx tattoo shop aka straight out the dungeons of code aka The crouching-tiger-hidden-semi-colon School aka The ruby-talk-pretty-one-day School aka The Flatiron School
 <br><br><br>
-<div style="float: right; padding-left: 40px"><img src="../images/mr2.jpg" alt="mr2" width="300" display="inline"></div>I learned to drive on a stick shift. My first car was a red two-seat '91 Toyota mr2 kinda like this here. My dad copped it for a quick 3k. He later sold it after I failed to communicate that it was the only vehicle I could ever love. 
+<div style="float: right; padding-left: 40px"><img src="/images/mr2.jpg" alt="mr2" width="300" display="inline"></div>I learned to drive on a stick shift. My first car was a red two-seat '91 Toyota mr2 kinda like this here. My dad copped it for a quick 3k. He later sold it after I failed to communicate that it was the only vehicle I could ever love. 
 <br>I would never have been that smitten driving an automatic. Sometimes abstraction is the opposite of intimacy.
 <br><br><br>
 That's how I feel about Sinatra. Today I made my first deployable ruby app. It's no hot rod but it will get you from A to B. ([Jukebox](http://www.mycodinghoneymoon.dreamhosters.com/playlister_erb/index.html "Jukebox"))
@@ -15,14 +15,14 @@ That's how I feel about Sinatra. Today I made my first deployable ruby app. It's
 Once I was done I understood how all the parts moved. I can conceptualize it and I can even draw an exploded diagram:
 <br><br>
 
-<img src="../images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline">
+<img src="/images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline">
 
 RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called "([Scanty](https://github.com/adamwiggins/scanty "Scanty")), a really small blog." I tried drawing a diagram of this one too:
 <br><br>
 
 <img src="/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline">
 
-This diagram is a mess. And the views shouldn't be floating like that.
+This diagram is hard to follow. And the views shouldn't be floating like that.
 
 It'd kinda like I just built a lawn mower engine:
 
