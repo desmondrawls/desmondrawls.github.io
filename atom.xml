@@ -4,7 +4,7 @@
   <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/atom.xml" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-09-12T03:00:32-04:00</updated>
+  <updated>2013-09-15T01:12:25-04:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
     <name><![CDATA[Desmond Rawls]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Eager Loading Performance Tests]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests/"/>
+    <updated>2013-09-14T22:09:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests</id>
+    <content type="html"><![CDATA[<p>Recording with multiplexing inspected by firebug from trans-atlantic fiber-optic cables aka the 4ms arbitrage industry aka America the startup aka the words-per-minute hall-of-fame aka the prepared-exclusively-for-Avi-Flombaum library the mayor&rsquo;s school-for-kids-that-can&rsquo;t-code-good-and-want-to-learn-to-do-other-things-good-too aka the Flatiron School in exile</p>
+
+<p>Eager loading is boss. I wanted to know how exactly how helpful the :includes method is so I spent my Saturday night rigging up some performance tests.</p>
+
+<p>I determined that the advantage you get from eager loading depends on how many records you are fetching from the database. I was surprised to find that it makes no difference how many associated tables you are referencing. I had, previously, assumed there would be a linear relationship between the number of tables and the time saved. If you save 100ms eager loading one associated table, shouldn&rsquo;t you save 200ms eager loading two tables? Somehow, that&rsquo;s not the case. The associations don&rsquo;t add up. Rather, eager loading saves time per record. It depends on how tall the tables you&rsquo;re referencing are, not how many tables you&rsquo;re referencing.</p>
+
+<p>In order to test references to associated tables I am using methods that call each of the associations individually. For example, for one reference I have:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/app/models/project.rb
+</span><span class='line'>  def self.creators
+</span><span class='line'>    projects = self.all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>  
+</span><span class='line'>  def self.creators_with_includes
+</span><span class='line'>    projects = self.includes(:creator).all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for seven references I have:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def self.creators_users_ideas_teams_directors_competitors_and_industries
+</span><span class='line'>    projects = self.all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>      project.user.name if project.user
+</span><span class='line'>      project.idea.name if project.idea
+</span><span class='line'>      project.team.name if project.team
+</span><span class='line'>      project.director.name if project.director
+</span><span class='line'>      project.competitor.name if project.competitor
+</span><span class='line'>      project.industry.name if project.industry
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def self.creators_users_ideas_teams_directors_competitors_and_industries_with_includes
+</span><span class='line'>    projects = self.includes(:creator).all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>      project.user.name if project.user
+</span><span class='line'>      project.idea.name if project.idea
+</span><span class='line'>      project.team.name if project.team
+</span><span class='line'>      project.director.name if project.director
+</span><span class='line'>      project.competitor.name if project.competitor
+</span><span class='line'>      project.industry.name if project.industry
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is the graph of my experiment with varying the number of records being retrieved from the database:</p>
+
+<p><img src="http://desmondrawls.github.io/images/eager-records.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>You save more time when you are retrieving more records.</p>
+
+<p>Here is the graph of my experiment with varying the number of tables being referenced.</p>
+
+<p><img src="http://desmondrawls.github.io/images/eager-associations.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>The time saved referencing a single associated table is the same as the time saved referencing seven associated tables. How is this possible? If I have 100 project records and I reference seven associated tables I am pulling up 700 more records in 7 different tables. I would expect this to be significantly slower than pulling up 100 more records in 1 table.</p>
+
+<p>If you can explain this phenomenon please e-mail me at <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x63;&#97;&#112;&#x74;&#97;&#105;&#x6e;&#x67;&#x72;&#x6f;&#118;&#x65;&#114;&#64;&#103;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#x6d;">&#99;&#x61;&#112;&#116;&#97;&#105;&#110;&#103;&#114;&#111;&#x76;&#x65;&#114;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Basic Rails Security]]></title>
