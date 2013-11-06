@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>new relic - H.E.L.M.</title>
+  <meta name="author" content="Desmond Rawls">
+  <link rel="author" href="humans.txt">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  
+    
+  
+  <meta name="description" content="Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest &hellip;">
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://desmondrawls.github.io/blog/2013/11/05/new-relic/">
+  <link href="/favicon.png" rel="icon">
+  <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="H.E.L.M." type="application/atom+xml">
+  <meta name="og:type" content="website" />
+  <meta name="og:site_name" content="H.E.L.M." />
+  <meta name="og:title" content="new relic" />
+  <meta name="og:description" content="Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest &hellip;" />
+  <meta name="og:url" content="http://desmondrawls.github.io/blog/2013/11/05/new-relic/"/>
+  <meta name="url" content="http://desmondrawls.github.io/blog/2013/11/05/new-relic/">
+  
+  <meta name="subject" content=""/>
+  <meta name="category" content=""/>
+  
+  <meta name="distribution" content="global">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <nav role="navigation"><div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="/">H.E.L.M.</a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog/archives">Archives</a></li>
+    </ul>
+    <ul class="nav" data-subscription="rss">
+      <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+      
+    </ul>
+      
+    <form class="navbar-form" action="http://google.com/search" method="get">
+      <fieldset role="search">
+        <input type="hidden" name="q" value="site:desmondrawls.github.io" />
+        <input class="span2" type="text" name="q" results="0" placeholder="Search"/>
+      </fieldset>
+    </form>
+      
+    
+  </div>
+</div>
+</nav>
+  <div class="wrapper_single">
+    <div class="container">
+      <article class="span8 offset2" role="article">
+        <div class="article-format">
+
+  <header>
+    
+      <h1 class="entry-title">New Relic</h1>
+    
+    
+      <p class="meta">
+        
+  
+
+
+  
+    <span class="byline author vcard">by <span class="fn">Desmond Rawls</span></span>
+  
+
+ - 
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-05T10:56:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time> - 
+        
+
+
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest working man in Business#show aka the textbook-a-day diet center aka the dystopian future think tank aka the final destination coincidence log aka the church of real-life CRUD aka the Flatiron School last man standing.</p>
+
+<p>According to research published by Google and Bing in 2009, even server delays of less that half a second affect user engagement. Of particular interest was Bing&rsquo;s finding that their revenue per user decreased by almost 3% with a server delay of 1 second.</p>
+
+<p>Not to mention the fact that since 2010 Google uses load time as a factor in page rankings.</p>
+
+<p>According to Ilya Grigorik from Google&rsquo;s GoFast team &ldquo;fast&rdquo; means under 250ms. He calls that the magic number. Meanwhile the median load time for a page on desktop is 2.7s and the mean is 6.9s. While you are waiting for your page to load go watch Ilya&rsquo;s talk on web-performance: <a href="http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/.">http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/.</a></p>
+
+<p>So what should you do to make your site faster? How much can even do? Unless you sit on the board of Comcast or AT&amp;T much of the life cycle of an HTTP Request is actually out of your control.</p>
+
+<p>An HTTP Request goes through four main phases. The first phase is the DNS lookup. It will take approximately 130ms to get the client&rsquo;s browser pointed at your server. There&rsquo;s not much you can do about that. The second phase of an HTTP Request is the handshake. The client&rsquo;s browser will open a TCP connection with the server so that data can start flowing. This handshake requires a round-trip from the client&rsquo;s browser to your server and back again. So the timing depends on how far apart the client and your server are. The only thing you can really do to make this faster is to use a CDN (content delivery network). With a CDN your content will be stored on servers all around the world. This means the HTTP Request will, on average, have less globetrotting to do. Now that a connection is open with the client&rsquo;s browser your server can finally process the HTTP Request. The server responds with assets from the database and arranges them in the body of an HTTP Response. During the fourth and final phase the client&rsquo;s browser has to download all of this content from the server and paint the page.</p>
+
+<p>The last two phases are where you can really improve performance with good design and the right analytic tools. The server response and the content download represent the back-end and the front-end, respectively. They do not, however, have equal impact on the total page load time. According to Steve Souders:<br/>
+&ldquo;80-90% of the end-user response time is spent on the frontend. Start there.&rdquo;</p>
+
+<p>My favorite tools for analyzing front-end performance are Google Analytics and the PageSpeed Chrome extension. Google Analytics mostly tracks visitor behavior and PageSpeed mostly makes suggestions on how to streamline your assets.</p>
+
+<p>When I used PageSpeed on a js-heavy, graphics-heavy site I built I received these suggestions:<br/>
+* Serve scaled images &ndash; I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.
+* Enable Compression &ndash; I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.
+* Optimize Images &ndash; Two of my images aren&rsquo;t compressed. I could save 38KB by compressing them.
+* Minify Javascript &ndash; I have one unminified javascript file. Minifying this file would save me a slight 513B.
+* Leverage Browser Caching &ndash; By setting an expiration date on static assets I could tell the client&rsquo;s browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.
+* Defer Parsing of JavaScript &ndash; JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don&rsquo;t want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.
+* Enable Keep-Alive &ndash; Keep-Alive maintains the same TCP connection for multiple HTTP Requests. The tricky thing with TCP connections is that they have a slow-start feature to probe how much data the network can handle in a single segment. Keep-Alive allows your TCP connection to continue sending the largest possible segments. While most of my header do have it enabled, Faye seems to default to disabling Keep-Alive.</p>
+
+<p>I used Rails for the above project. Rails handles much of the front-end optimization automatically with the asset pipeline and with Rack middleware. The asset pipeline will concatenate all your css and js files so that you need less HTTP Requests to serve all your assets. For the issues that have to do with caching Rack::Cache and Rack::ETag are there to help. By default Rack should set the cache-control to public (so it can be stored locally) and provide a max-age. Rack::ETag should provide a fingerprint so that while the assets are still fresh they are not requested from the server again. That means more &ldquo;304 Not Modified 2ms&rdquo; and less &ldquo;200 OK 100ms&rdquo;. It seems like for some of my headers Rack decided to do things differently. If I wanted to over-ride Rack&rsquo;s header defaults I could. For example, to set &ldquo;Cache-Control max-age=180, public&rdquo; I could add &ldquo;expires_in 3.minutes, :public => true&rdquo; to the relevant controller.</p>
+
+<p>Don&rsquo;t rely on tools like PageSpeed to fix your front-end after you build it. Better to, as you go, remember to use the right size/format images, concatenate css and js, put css first and js last, and set your headers to cache static assets. Once you do all that it is time to think about the back-end.</p>
+
+<p>For analyzing server performance New_Relic can tell you everything you want to know. It&rsquo;s better than looking through log files.</p>
+
+<p>While working on a project that used Github&rsquo;s API I had a page to display all the repos for a particular user. When the page took 7s to load I started looking through the server logs. It was immediately obvious which database query was responsible. Knowing that, I was able to track down the bug in my code. The bug turned out to be a check across all the user&rsquo;s repos that was happening every time the user page loaded instead of just once when pulling in the Github API. By taking out this check I was able to load the repos in 12ms instead of 7s.</p>
+
+<p>But what about when the problem is less obvious? My previous example is an easy case. If you are trying to tune your site&rsquo;s performance you probably don&rsquo;t want to be sifting through server logs. New_Relic will show you a break-down of every web transaction and which controller actions are involved.</p>
+
+<p>Using New_Relic I was able to identify a slow controller action.</p>
+
+<p><img src="/images/new_relic_actions.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>I realized I had foreign keys that should be indexed but weren&rsquo;t. After indexing I saw my server response time go from 125 ms to under 50ms. Just like that.</p>
+
+<p><img src="/images/new_relic_graph.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>Now that I have my front-end and my back-end taken care of, if anything is slow I can blame it on <a href="http://www.youtube.com/watch?v=KpUNA2nutbk">the speed of light</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+  
+    <span class="byline author vcard">by <span class="fn">Desmond Rawls</span></span>
+  
+
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-05T10:56:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://desmondrawls.github.io/blog/2013/11/05/new-relic/" data-via="" data-counturl="http://desmondrawls.github.io/blog/2013/11/05/new-relic/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    
+      <a class="pull-left" href="/blog/2013/09/14/eager-loading-performance-tests/" title="Previous Post: Eager Loading Performance Tests">&laquo; Eager Loading Performance Tests</a>
+    
+    
+  </footer>
+
+</div>
+
+        
+      </article>
+    </div>
+  </div>
+  <div id="footer-widgets">
+  <div class="container">
+    <div class="row">
+  <div class="span3">
+    <h2>recent posts</h2>
+    <ul class="recent_posts">
+      
+        <li>
+          <a href="/blog/2013/11/05/new-relic/">new relic</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/09/14/eager-loading-performance-tests/">Eager Loading Performance Tests</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/09/12/basic-rails-security/">Basic Rails Security</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/06/23/sinatra-directory-example/">Student Driver</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/">5 Metaphors for 'yield' (My First Semi-Technical Post)</a>
+        </li>
+      
+    </ul>
+    <h2><a href="/blog/archives">archives</a></h2>
+  </div>
+  <div class="span3">
+    
+
+  </div>
+  <div class="span4">
+    
+
+  </div>
+  <div class="span2">
+    <h2></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-left">
+  <a href="/">H.E.L.M.</a>
+  - Copyright &copy; 2013 - Desmond Rawls
+</p>
+<p class="pull-right">
+  <span>Powered by <a href="http://octopress.org/">Octopress</a>.</span>
+  
+    <span>Designed by <a href="http://www.AdrianArtiles.com">Adrian Artiles</a>.</span>
+  
+</p>
+
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="/javascripts/libs/jquery-1.7.2.min.js" type="text/javascript"><\/script>')</script>
+<script src="/javascripts/libs/bootstrap.min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.tweet.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.instagram.js" type="text/javascript"></script>
+<script src="/javascripts/libs/jquery.masonry.min.js" type="text/javascript"></script>
+<script src="/javascripts/custom.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>
