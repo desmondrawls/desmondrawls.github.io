@@ -24,12 +24,19 @@ The last two phases are where you can really improve performance with good desig
 My favorite tools for analyzing front-end performance are Google Analytics and the PageSpeed Chrome extension. Google Analytics mostly tracks visitor behavior and PageSpeed mostly makes suggestions on how to streamline your assets.
 
 When I used PageSpeed on a js-heavy, graphics-heavy site I built I received these suggestions:  
-* Serve scaled images - I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.
-* Enable Compression - I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.
-* Optimize Images - Two of my images aren't compressed. I could save 38KB by compressing them.
-* Minify Javascript - I have one unminified javascript file. Minifying this file would save me a slight 513B.
-* Leverage Browser Caching - By setting an expiration date on static assets I could tell the client's browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.
-* Defer Parsing of JavaScript - JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don't want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.
+
+* Serve scaled images - I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.  
+
+* Enable Compression - I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.  
+
+* Optimize Images - Two of my images aren't compressed. I could save 38KB by compressing them.  
+
+* Minify Javascript - I have one unminified javascript file. Minifying this file would save me a slight 513B.  
+
+* Leverage Browser Caching - By setting an expiration date on static assets I could tell the client's browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.  
+
+* Defer Parsing of JavaScript - JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don't want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.  
+
 * Enable Keep-Alive - Keep-Alive maintains the same TCP connection for multiple HTTP Requests. The tricky thing with TCP connections is that they have a slow-start feature to probe how much data the network can handle in a single segment. Keep-Alive allows your TCP connection to continue sending the largest possible segments. While most of my header do have it enabled, Faye seems to default to disabling Keep-Alive.
 
 
