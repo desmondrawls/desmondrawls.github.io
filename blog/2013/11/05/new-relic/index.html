@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Web Performance - H.E.L.M.</title>
+  <title>new relic - H.E.L.M.</title>
   <meta name="author" content="Desmond Rawls">
   <link rel="author" href="humans.txt">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -21,17 +21,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://desmondrawls.github.io/blog/2013/11/05/web-performance/">
+  <link rel="canonical" href="http://desmondrawls.github.io/blog/2013/11/05/new-relic/">
   <link href="/favicon.png" rel="icon">
   <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="H.E.L.M." type="application/atom+xml">
   <meta name="og:type" content="website" />
   <meta name="og:site_name" content="H.E.L.M." />
-  <meta name="og:title" content="Web Performance" />
+  <meta name="og:title" content="new relic" />
   <meta name="og:description" content="Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest &hellip;" />
-  <meta name="og:url" content="http://desmondrawls.github.io/blog/2013/11/05/web-performance/"/>
-  <meta name="url" content="http://desmondrawls.github.io/blog/2013/11/05/web-performance/">
+  <meta name="og:url" content="http://desmondrawls.github.io/blog/2013/11/05/new-relic/"/>
+  <meta name="url" content="http://desmondrawls.github.io/blog/2013/11/05/new-relic/">
   
   <meta name="subject" content=""/>
   <meta name="category" content=""/>
@@ -76,7 +76,7 @@
 
   <header>
     
-      <h1 class="entry-title">Web Performance</h1>
+      <h1 class="entry-title">New Relic</h1>
     
     
       <p class="meta">
@@ -101,7 +101,7 @@
   
 
 
-<time datetime="2013-11-05T19:24:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time> - 
+<time datetime="2013-11-05T10:56:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time> - 
         
 
 
@@ -128,18 +128,14 @@
 
 <p>My favorite tools for analyzing front-end performance are Google Analytics and the PageSpeed Chrome extension. Google Analytics mostly tracks visitor behavior and PageSpeed mostly makes suggestions on how to streamline your assets.</p>
 
-<p>When I used PageSpeed on a js-heavy, graphics-heavy site I built I received these suggestions:</p>
-
-<ul>
-<li><p>Serve scaled images &ndash; I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.</p></li>
-<li><p>Enable Compression &ndash; I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.</p></li>
-<li><p>Optimize Images &ndash; Two of my images aren&rsquo;t compressed. I could save 38KB by compressing them.</p></li>
-<li><p>Minify Javascript &ndash; I have one unminified javascript file. Minifying this file would save me a slight 513B.</p></li>
-<li><p>Leverage Browser Caching &ndash; By setting an expiration date on static assets I could tell the client&rsquo;s browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.</p></li>
-<li><p>Defer Parsing of JavaScript &ndash; JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don&rsquo;t want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.</p></li>
-<li><p>Enable Keep-Alive &ndash; Keep-Alive maintains the same TCP connection for multiple HTTP Requests. The tricky thing with TCP connections is that they have a slow-start feature to probe how much data the network can handle in a single segment. Keep-Alive allows your TCP connection to continue sending the largest possible segments. While most of my header do have it enabled, Faye seems to default to disabling Keep-Alive.</p></li>
-</ul>
-
+<p>When I used PageSpeed on a js-heavy, graphics-heavy site I built I received these suggestions:<br/>
+* Serve scaled images &ndash; I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.
+* Enable Compression &ndash; I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.
+* Optimize Images &ndash; Two of my images aren&rsquo;t compressed. I could save 38KB by compressing them.
+* Minify Javascript &ndash; I have one unminified javascript file. Minifying this file would save me a slight 513B.
+* Leverage Browser Caching &ndash; By setting an expiration date on static assets I could tell the client&rsquo;s browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.
+* Defer Parsing of JavaScript &ndash; JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don&rsquo;t want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.
+* Enable Keep-Alive &ndash; Keep-Alive maintains the same TCP connection for multiple HTTP Requests. The tricky thing with TCP connections is that they have a slow-start feature to probe how much data the network can handle in a single segment. Keep-Alive allows your TCP connection to continue sending the largest possible segments. While most of my header do have it enabled, Faye seems to default to disabling Keep-Alive.</p>
 
 <p>I used Rails for the above project. Rails handles much of the front-end optimization automatically with the asset pipeline and with Rack middleware. The asset pipeline will concatenate all your css and js files so that you need less HTTP Requests to serve all your assets. For the issues that have to do with caching Rack::Cache and Rack::ETag are there to help. By default Rack should set the cache-control to public (so it can be stored locally) and provide a max-age. Rack::ETag should provide a fingerprint so that while the assets are still fresh they are not requested from the server again. That means more &ldquo;304 Not Modified 2ms&rdquo; and less &ldquo;200 OK 100ms&rdquo;. It seems like for some of my headers Rack decided to do things differently. If I wanted to over-ride Rack&rsquo;s header defaults I could. For example, to set &ldquo;Cache-Control max-age=180, public&rdquo; I could add &ldquo;expires_in 3.minutes, :public => true&rdquo; to the relevant controller.</p>
 
@@ -186,7 +182,7 @@
   
 
 
-<time datetime="2013-11-05T19:24:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
+<time datetime="2013-11-05T10:56:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
       
 
 
@@ -194,7 +190,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://desmondrawls.github.io/blog/2013/11/05/web-performance/" data-via="" data-counturl="http://desmondrawls.github.io/blog/2013/11/05/web-performance/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://desmondrawls.github.io/blog/2013/11/05/new-relic/" data-via="" data-counturl="http://desmondrawls.github.io/blog/2013/11/05/new-relic/" >Tweet</a>
   
   
   
@@ -202,8 +198,10 @@
 
     
     
-      <a class="pull-left" href="/blog/2013/11/05/new-relic/" title="Previous Post: new relic">&laquo; new relic</a>
+      <a class="pull-left" href="/blog/2013/09/14/eager-loading-performance-tests/" title="Previous Post: Eager Loading Performance Tests">&laquo; Eager Loading Performance Tests</a>
     
+    
+      <a class="pull-right" href="/blog/2013/11/05/web-performance/" title="Next Post: Web Performance">Web Performance &raquo;</a>
     
   </footer>
 
