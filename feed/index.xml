@@ -4,7 +4,7 @@
   <title><![CDATA[H.E.L.M.]]></title>
   <link href="http://desmondrawls.github.io/feed" rel="self"/>
   <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-11-05T19:08:57-05:00</updated>
+  <updated>2013-11-05T21:32:17-05:00</updated>
   <id>http://desmondrawls.github.io/</id>
   <author>
     <name><![CDATA[Desmond Rawls]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[new relic]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/11/05/new-relic/"/>
-    <updated>2013-11-05T10:56:00-05:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/11/05/new-relic</id>
+    <title type="html"><![CDATA[Web Performance]]></title>
+    <link href="http://desmondrawls.github.io/blog/2013/11/05/web-performance/"/>
+    <updated>2013-11-05T19:24:00-05:00</updated>
+    <id>http://desmondrawls.github.io/blog/2013/11/05/web-performance</id>
     <content type="html"><![CDATA[<p>Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest working man in Business#show aka the textbook-a-day diet center aka the dystopian future think tank aka the final destination coincidence log aka the church of real-life CRUD aka the Flatiron School last man standing.</p>
 
 <p>According to research published by Google and Bing in 2009, even server delays of less that half a second affect user engagement. Of particular interest was Bing&rsquo;s finding that their revenue per user decreased by almost 3% with a server delay of 1 second.</p>

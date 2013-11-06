@@ -1,24 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[H.E.L.M.]]></title>
-  <link href="http://desmondrawls.github.io/atom.xml" rel="self"/>
-  <link href="http://desmondrawls.github.io/"/>
-  <updated>2013-11-05T21:32:17-05:00</updated>
-  <id>http://desmondrawls.github.io/</id>
-  <author>
-    <name><![CDATA[Desmond Rawls]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>H.E.L.M.</title>
+  <meta name="author" content="Desmond Rawls">
+  <link rel="author" href="humans.txt">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   
-  <entry>
-    <title type="html"><![CDATA[Web Performance]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/11/05/web-performance/"/>
-    <updated>2013-11-05T19:24:00-05:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/11/05/web-performance</id>
-    <content type="html"><![CDATA[<p>Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest working man in Business#show aka the textbook-a-day diet center aka the dystopian future think tank aka the final destination coincidence log aka the church of real-life CRUD aka the Flatiron School last man standing.</p>
+    
+  
+  <meta name="description" content="I have found that my ignorance is a better indicator of where I am than my knowledge. For example, until my junior year of high school I couldn’t &hellip;">
+  
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://desmondrawls.github.io/blog/">
+  <link href="/favicon.png" rel="icon">
+  <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="H.E.L.M." type="application/atom+xml">
+  <meta name="og:type" content="website" />
+  <meta name="og:site_name" content="H.E.L.M." />
+  <meta name="og:title" content="H.E.L.M." />
+  <meta name="og:description" content="I have found that my ignorance is a better indicator of where I am than my knowledge. For example, until my junior year of high school I couldn’t &hellip;" />
+  <meta name="og:url" content="http://desmondrawls.github.io/blog/index.html"/>
+  <meta name="url" content="http://desmondrawls.github.io/blog/index.html">
+  
+  <meta name="distribution" content="global">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  
+
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/11/05/web-performance/">Web Performance</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-11-05T19:24:00-05:00" pubdate data-updated="true"><i class="icon-calendar"></i> Nov 5<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Recording with over-dubbed anime voices from inside a giant robot fighting balloons at the Macy&rsquo;s Thanksgiving Day Parade aka the hardest working man in Business#show aka the textbook-a-day diet center aka the dystopian future think tank aka the final destination coincidence log aka the church of real-life CRUD aka the Flatiron School last man standing.</p>
 
 <p>According to research published by Google and Bing in 2009, even server delays of less that half a second affect user engagement. Of particular interest was Bing&rsquo;s finding that their revenue per user decreased by almost 3% with a server delay of 1 second.</p>
 
@@ -56,22 +123,57 @@
 
 <p>Using New_Relic I was able to identify a slow controller action.</p>
 
-<p><img src="http://desmondrawls.github.io/images/new_relic_actions.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+<p><img src="/images/new_relic_actions.jpg" alt="tables" height="300" width="1000" display="inline"></p>
 
 <p>I realized I had foreign keys that should be indexed but weren&rsquo;t. After indexing I saw my server response time go from 125 ms to under 50ms. Just like that.</p>
 
-<p><img src="http://desmondrawls.github.io/images/new_relic_graph.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+<p><img src="/images/new_relic_graph.jpg" alt="tables" height="300" width="1000" display="inline"></p>
 
 <p>Now that I have my front-end and my back-end taken care of, if anything is slow I can blame it on <a href="http://www.youtube.com/watch?v=KpUNA2nutbk">the speed of light</a>.</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[Eager Loading Performance Tests]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests/"/>
-    <updated>2013-09-14T22:09:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/09/14/eager-loading-performance-tests</id>
-    <content type="html"><![CDATA[<p>Recording with multiplexing inspected by firebug from trans-atlantic fiber-optic cables aka the 4ms arbitrage industry aka America the startup aka the fast-fingers words-per-minute hall-of-fame aka the prepared-exclusively-for-Avi-Flombaum library aka the mayor&rsquo;s school-for-kids-that-can&rsquo;t-code-good-and-want-to-learn-to-do-other-things-good-too aka the Flatiron School in exile</p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/09/14/eager-loading-performance-tests/">Eager Loading Performance Tests</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-09-14T22:09:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 14<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Recording with multiplexing inspected by firebug from trans-atlantic fiber-optic cables aka the 4ms arbitrage industry aka America the startup aka the fast-fingers words-per-minute hall-of-fame aka the prepared-exclusively-for-Avi-Flombaum library aka the mayor&rsquo;s school-for-kids-that-can&rsquo;t-code-good-and-want-to-learn-to-do-other-things-good-too aka the Flatiron School in exile</p>
 
 <p>Eager loading is boss. But exactly how boss is it? I wanted to measure how helpful the :includes method is so I spent my Saturday night rigging up some performance tests.</p>
 
@@ -165,28 +267,63 @@
 
 <p>Here is the graph of my experiment varying the number of records being retrieved from the database (the red line is with eager loading):</p>
 
-<p><img src="http://desmondrawls.github.io/images/eager-records.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+<p><img src="/images/eager-records.jpg" alt="tables" height="300" width="1000" display="inline"></p>
 
 <p>You save more time when you are retrieving more records. You save approximately half a millisecond per record.</p>
 
 <p>Here is the graph of my experiment with varying the number of tables being referenced (again, the red line is with eager loading):</p>
 
-<p><img src="http://desmondrawls.github.io/images/eager-associations.jpg" alt="tables" height="300" width="1000" display="inline"></p>
+<p><img src="/images/eager-associations.jpg" alt="tables" height="300" width="1000" display="inline"></p>
 
 <p>This graph looks very similar to the previous one where I vary the number of records. The similarity makes sense. The way I have my methods set up I am retrieving 100 records from each additional table. So it&rsquo;s not surprising that the performance advantage that comes with eager loading one more table is approximately the same as the performance advantage that comes with eager loading 100 more records.</p>
 
 <p>Without eager loading every record comes from a separate database query that doesn&rsquo;t care whether it is returning to the same table over and over or hitting a different table every time. With eager loading you have one initial database query then, after that, every relational call is referencing our stored array of hashes.</p>
 
 <p>So the answer is eager loading saves you approximately half a millisecond per record.</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[Basic Rails Security]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security/"/>
-    <updated>2013-09-12T02:20:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/09/12/basic-rails-security</id>
-    <content type="html"><![CDATA[<p>Recording on version control from the octocat animal shelter aka the hackathon of life aka the conference room that looks a lot like a bar aka the xss justice league aka the no-sql-no-cry school aka the pull-request-of-destiny school aka the ask-me-about-blocks-procs-and-lambdas school aka the Flatiron School in purgatory</p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/09/12/basic-rails-security/">Basic Rails Security</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-09-12T02:20:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Sep 12<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Recording on version control from the octocat animal shelter aka the hackathon of life aka the conference room that looks a lot like a bar aka the xss justice league aka the no-sql-no-cry school aka the pull-request-of-destiny school aka the ask-me-about-blocks-procs-and-lambdas school aka the Flatiron School in purgatory</p>
 
 <p>Now that I have some idea how to control my tables and views my next big task is to make sure no one else gets any ideas about how to control my tables and views. Security is for lovers. I love my databases and I love my users and I don&rsquo;t want any sql injection or cross-site scripting getting between us.</p>
 
@@ -479,20 +616,55 @@ end
 <h3>Conclusion</h3>
 
 <p>Prepared statements, attr-accessible, httpOnly, and restful controller actions are very simple ways of protecting yourself. The Synchronizer Token Pattern takes a little more work but sounds straight-forward. Not having experience with security, I imagine most of the time spent locking down a site goes into sanitizing user input with whitelists and regExp. If you want to survive you can&rsquo;t trust anyone with a keyboard or a touch-screen or a magic mouse or a wiimote.</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[Student Driver]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/23/sinatra-directory-example/"/>
-    <updated>2013-06-23T09:57:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/23/sinatra-directory-example</id>
-    <content type="html"><![CDATA[<p>Recording on vhs from your childhood blockbuster video store aka the aliased keystrokes thrift shop aka the Pro-Question Action League &ldquo;a question&rsquo;s a question, no matter how small&rdquo; aka the Land Before Rails aka the RegEx tattoo shop aka straight out the dungeons of code aka The crouching-tiger-hidden-semi-colon School aka The ruby-talk-pretty-one-day School aka The Flatiron School</p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/06/23/sinatra-directory-example/">Student Driver</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-23T09:57:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 23<span>rd</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>Recording on vhs from your childhood blockbuster video store aka the aliased keystrokes thrift shop aka the Pro-Question Action League &ldquo;a question&rsquo;s a question, no matter how small&rdquo; aka the Land Before Rails aka the RegEx tattoo shop aka straight out the dungeons of code aka The crouching-tiger-hidden-semi-colon School aka The ruby-talk-pretty-one-day School aka The Flatiron School</p>
 
 <br><br><br>
 
 
-<div style="float: right; padding-left: 40px"><img src="http://desmondrawls.github.io/images/mr2.jpg" alt="mr2" width="300" display="inline"></div>
+<div style="float: right; padding-left: 40px"><img src="/images/mr2.jpg" alt="mr2" width="300" display="inline"></div>
 
 
 <p>I learned to drive on a stick shift. My first car was a red two-seat &lsquo;91 Toyota mr2 kinda like this here. My dad copped it for a quick 3k. He later sold it after I failed to communicate that it was the only vehicle I could ever love.</p>
@@ -510,27 +682,27 @@ end
 <br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline"></p>
+<p><img src="/images/playlister_erb_diagram.jpg" alt="playlister" height="300" width="1000" display="inline"></p>
 
 <p>RIP. Tomorrow we start on Sinatra. I browsed some Sinatra apps on github to try to see how they work. The simplest example I could find is this blogging app called &ldquo;(<a href="https://github.com/adamwiggins/scanty" title="Scanty">Scanty</a>), a really small blog.&rdquo; I tried drawing a diagram of this one too:</p>
 
 <br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+<p><img src="/images/sinatra_example_diagram.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
 
 <p>This diagram is hard to follow. And the views shouldn&rsquo;t be floating like that.</p>
 
 <p>It&rsquo;d kinda like I just built a lawn mower engine:</p>
 
-<p><img src="http://desmondrawls.github.io/images/mower.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+<p><img src="/images/mower.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
 
 <p>Then tried to understand a simple volvo engine:</p>
 
 <br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/volvo.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
+<p><img src="/images/volvo.jpg" alt="sinatra" height="300" width="1000" display="inline"></p>
 
 <p>&hellip;and realized I couldn&rsquo;t even find the starter.</p>
 
@@ -541,7 +713,7 @@ end
 <br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/volvocovered.jpg" alt="volvo" height="300" width="1000" display="inline"></p>
+<p><img src="/images/volvocovered.jpg" alt="volvo" height="300" width="1000" display="inline"></p>
 
 <br><br>
 
@@ -552,15 +724,50 @@ end
 
 
 <p>Is there a steampunk movement in the Ruby community? If you&rsquo;re out there call me..</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[5 Metaphors for 'yield' (My First Semi-Technical Post)]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/"/>
-    <updated>2013-06-15T19:59:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post</id>
-    <content type="html"><![CDATA[<p><strong>Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the dark room with a light in the corner aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School</strong></p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/">5 Metaphors for &#8216;yield&#8217; (My First Semi-Technical Post)</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-15T19:59:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 15<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p><strong>Recording with a light-second delay from basecamp at Mt. Ruby where all the rocks are gems and all the gems are mountains aka the origami enchanted forrest aka the blank screen wrecking yard aka the dark room with a light in the corner aka the Grace Hopper appreciation society aka the Sandi Metz support group aka the solar-powered confidence summer jam aka The its-not-about-computers School aka the Flatiron School</strong></p>
 
 <h2>&lsquo;yield&rsquo; is a keyword that appears in a method to turn over the reigns to a yet-to-be-determined block of code. You add the block when you call the function. It can be any block you like.</h2>
 
@@ -572,11 +779,11 @@ end
 <br><br>  
 
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode1.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode1.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode2.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode2.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode3.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -587,11 +794,11 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode4.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode6.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode6.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode7.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode7.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -601,9 +808,9 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode8.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode8.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode9.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode9.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -613,9 +820,9 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode10.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode10.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode11.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode11.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -625,13 +832,13 @@ With a method that takes an argument:</p>
 <br><br><br>
 
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode12.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode12.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode13.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode13.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode14.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode14.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
-<p><img src="http://desmondrawls.github.io/images/yieldcode15.jpg" alt="code" height="300" width="1000" display="inline"></p>
+<p><img src="/images/yieldcode15.jpg" alt="code" height="300" width="1000" display="inline"></p>
 
 <br><br><br>
 
@@ -640,40 +847,75 @@ With a method that takes an argument:</p>
 
 <h3>1. &lsquo;yield&rsquo; is the settings on your microwave. Like on mine i have &ldquo;time defrost&rdquo;, &ldquo;auto defrost&rdquo;, &ldquo;reheat&rdquo;, &ldquo;cook&rdquo;, &ldquo;popcorn&rdquo;, &ldquo;pizza&rdquo;, and &ldquo;beverage.&rdquo;</h3>
 
-<p><img src="http://desmondrawls.github.io/images/popcorn.jpg" alt="Smiley face" height="200" width="400" display="inline"></p>
+<p><img src="/images/popcorn.jpg" alt="Smiley face" height="200" width="400" display="inline"></p>
 
 <h3>2. &lsquo;yield&rsquo; is the attachments on your kitchenaid food processor.</h3>
 
-<p><img src="http://desmondrawls.github.io/images/mixer.jpg" alt="Smiley face" height="400" width="400" display="inline"></p>
+<p><img src="/images/mixer.jpg" alt="Smiley face" height="400" width="400" display="inline"></p>
 
 <h3>3. &lsquo;yield&rsquo; is AutoTune.</h3>
 
-<p><audio src="http://desmondrawls.github.io/audio/chipmunk.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+<p><audio src="/audio/chipmunk.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
 
-<p><audio src="http://desmondrawls.github.io/audio/vader.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
+<p><audio src="/audio/vader.m4a" controls><a href="../audio/vader.m4v">an audio</a></audio></p>
 
 <h3>4. &lsquo;yield&rsquo; is tinted sunglasses.</h3>
 
-<p><img src="http://desmondrawls.github.io/images/bono.jpg" alt="Smiley face" height="200" width="400" display="inline"><img src="http://desmondrawls.github.io/images/bonoblue.jpg" alt="Smiley face" height="200" width="400" display="inline"></P>
+<p><img src="/images/bono.jpg" alt="Smiley face" height="200" width="400" display="inline"><img src="/images/bonoblue.jpg" alt="Smiley face" height="200" width="400" display="inline"></P>
 
 
 <h3>5. &lsquo;yield&rsquo; is that trick play from Little Giants.</h3>
 
-<p><video src="http://desmondrawls.github.io/images/little_giants.mp4" controls><a href="http://desmondrawls.github.io/images/little_giants.mp4">a film</a></video></p>
+<p><video src="/images/little_giants.mp4" controls><a href="/images/little_giants.mp4">a film</a></video></p>
 
 <br><br><br><br><br><br><br><br>
 
 
 <p>I hope that helps&hellip;</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[20 Questions I need to Ask any programmer before I can guess what you're about]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/14/20-questions/"/>
-    <updated>2013-06-14T16:03:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/14/20-questions</id>
-    <content type="html"><![CDATA[<p>What software do you wish you had been the one to make?</p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/06/14/20-questions/">20 Questions I need to Ask any programmer before I can guess what you&#8217;re about</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-14T16:03:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 14<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p>What software do you wish you had been the one to make?</p>
 
 <p>If you could time travel would you go to the future or the past?</p>
 
@@ -723,15 +965,50 @@ What if you had a +1?</p>
 <p>Do you like to travel?</p>
 
 <p>Do you sing in the shower?</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[Who's in Charge Here?]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/11/whos-in-charge-here/"/>
-    <updated>2013-06-11T19:36:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/11/whos-in-charge-here</id>
-    <content type="html"><![CDATA[<p><strong>Recording live from the mountain-top, fog-shrouded monastery of the holy order of uninitialized variables aka the chamber of binary incantations aka the cave of forgotten code aka the officer candidate school in the global war on minor inconveniences aka just another secret underground yoleo-enabled satellite surveillance station aka the equal-opportunity drop in a white male pond aka the how-many-computer-nerds-does-it-take-to-make-a-cup-of-coffee research labratory aka The learn-you-some-git-and-join-a-startup School aka The Flatiron School.</strong></p>
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/06/11/whos-in-charge-here/">Who&#8217;s in Charge Here?</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-11T19:36:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 11<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  <p><strong>Recording live from the mountain-top, fog-shrouded monastery of the holy order of uninitialized variables aka the chamber of binary incantations aka the cave of forgotten code aka the officer candidate school in the global war on minor inconveniences aka just another secret underground yoleo-enabled satellite surveillance station aka the equal-opportunity drop in a white male pond aka the how-many-computer-nerds-does-it-take-to-make-a-cup-of-coffee research labratory aka The learn-you-some-git-and-join-a-startup School aka The Flatiron School.</strong></p>
 
 <br/>
 
@@ -768,9 +1045,9 @@ This phenomenon is about more than Obama’s human resources team. It’s a refl
 (<a href="http://fivethirtyeight.blogs.nytimes.com/2012/11/28/in-silicon-valley-technology-talent-gap-threatens-g-o-p-campaigns/" title="tech politics">tech politics</a>)
 I don’t know if Obama won because of his online campaign but I’m sure it didn’t hurt. And the power behind that campaign was a small group of people with strong opinions. Shaping the world just like that.</p>
 
-<p>And don&rsquo;t get me started on <a href="http://desmondrawls.github.io/images/prison.jpg">PRISON</a>, I mean <a href="http://desmondrawls.github.io/images/prison.jpg">PRISM</a>.</p>
+<p>And don&rsquo;t get me started on <a href="/images/prison.jpg">PRISON</a>, I mean <a href="/images/prison.jpg">PRISM</a>.</p>
 
-<p>The world isn’t flat but it’s close: <a href="http://desmondrawls.github.io/images/macair.jpg">sorta flat</a></p>
+<p>The world isn’t flat but it’s close: <a href="/images/macair.jpg">sorta flat</a></p>
 
 <br/>
 
@@ -812,25 +1089,201 @@ I don’t know if Obama won because of his online campaign but I’m sure it did
 
 
 <p>To be clear, I am not taking issue with anyone’s particular political or social ends. I am concerned with the structure of power. In this great land of checks and balances it seems like there might be another balance going unchecked.</p>
-]]></content>
-  </entry>
+
+
+  </article>
+  <hr>
+
   
-  <entry>
-    <title type="html"><![CDATA[say my name git]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source/"/>
-    <updated>2013-06-09T14:02:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/09/say-my-name-gitgit-push-origin-source</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
+  <article class="listing">
+    <header>
   
-  <entry>
-    <title type="html"><![CDATA[Why meee??]]></title>
-    <link href="http://desmondrawls.github.io/blog/2013/06/09/why-meee/"/>
-    <updated>2013-06-09T13:54:00-04:00</updated>
-    <id>http://desmondrawls.github.io/blog/2013/06/09/why-meee</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
+  <h1 class="beta">
+    <a href="/blog/2013/06/09/say-my-name-gitgit-push-origin-source/">say my name git</a>
+  </h1>
   
-</feed>
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-09T14:02:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 9<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  
+
+
+  </article>
+  <hr>
+
+  
+  <article class="listing">
+    <header>
+  
+  <h1 class="beta">
+    <a href="/blog/2013/06/09/why-meee/">Why meee??</a>
+  </h1>
+  
+
+  
+  <div class="meta clearfix">
+    
+
+
+
+
+
+
+
+
+  
+
+
+<time class="pull-left" datetime="2013-06-09T13:54:00-04:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jun 9<span>th</span>, 2013</time>
+    
+
+
+
+  
+
+    
+  </div>
+  
+</header>
+
+
+
+
+  
+
+
+  </article>
+  <hr>
+
+  <div id="footer-widgets">
+  <div class="container">
+    <div class="row">
+  <div class="span3">
+    <h2>recent posts</h2>
+    <ul class="recent_posts">
+      
+        <li>
+          <a href="/blog/2013/11/05/web-performance/">Web Performance</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/09/14/eager-loading-performance-tests/">Eager Loading Performance Tests</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/09/12/basic-rails-security/">Basic Rails Security</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/06/23/sinatra-directory-example/">Student Driver</a>
+        </li>
+      
+        <li>
+          <a href="/blog/2013/06/15/metaphors-for-yield-my-first-semi-technical-post/">5 Metaphors for 'yield' (My First Semi-Technical Post)</a>
+        </li>
+      
+    </ul>
+    <h2><a href="/blog/archives">archives</a></h2>
+  </div>
+  <div class="span3">
+    
+
+  </div>
+  <div class="span4">
+    
+
+  </div>
+  <div class="span2">
+    <h2>found on</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-left">
+  <a href="/">H.E.L.M.</a>
+  - Copyright &copy; 2013 - Desmond Rawls
+</p>
+<p class="pull-right">
+  <span>Powered by <a href="http://octopress.org/">Octopress</a>.</span>
+  
+    <span>Designed by <a href="http://www.AdrianArtiles.com">Adrian Artiles</a>.</span>
+  
+</p>
+
+  </div>
+</footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="/javascripts/libs/jquery-1.7.2.min.js" type="text/javascript"><\/script>')</script>
+<script src="/javascripts/libs/bootstrap.min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.tweet.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.instagram.js" type="text/javascript"></script>
+<script src="/javascripts/libs/jquery.masonry.min.js" type="text/javascript"></script>
+<script src="/javascripts/custom.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+</body>
+</html>
